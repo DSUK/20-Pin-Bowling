@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="testingbowling" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/testingbowling" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="/usr/include/bullet" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL2_test" />
+					<Add option="-lSDL2" />
+					<Add option="-lGL" />
+					<Add option="-lGLU" />
+					<Add option="-lpthread" />
+					<Add option="-Wl" />
+					<Add option="-lm" />
+					<Add option="-Wl,-rpath,/usr/local/lib" />
+					<Add option="-lBulletSoftBody" />
+					<Add option="-lBulletDynamics" />
+					<Add option="-lBulletCollision" />
+					<Add option="-lLinearMath" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/testingbowling" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="BulletObjs.cpp" />
+		<Unit filename="Fragment.frag" />
+		<Unit filename="GLSL_loader.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="GLSL_loader.hpp" />
+		<Unit filename="GL_camera.cpp" />
+		<Unit filename="GL_camera.hpp" />
+		<Unit filename="PhysWorld.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="PhysWorld.h">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="Rect.cpp">
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="Rect.h" />
+		<Unit filename="Vertex.vert" />
+		<Unit filename="main" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

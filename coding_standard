@@ -1,0 +1,12 @@
+FILE_NAME_INCLUDE_GUARD_H => include guards
+SCREAMING_SNAKE_CASE => defines/macros
+PascalCase => class names
+camelCase => class methods / class varibles
+snake_case => unclassed methods / tempory varibles
+kPascalCase => constants
+iPascalCase => interfaces
+
+filename => class name in case
+
+.hpp, not .h unless for C files
+LF line endings

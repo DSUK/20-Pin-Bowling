@@ -1,0 +1,29 @@
+#ifndef BALL_H
+#define BALL_H
+#include <glm/glm.hpp>
+#include <cmath>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
+
+class Ball
+{
+    public:
+        Ball(float radius, int vslices,int hslices);
+        void draw();
+        ~Ball();
+        void printit();
+    protected:
+    private:
+        GLfloat *points_;
+        int vslices_;
+        int twicehslices_;
+        int arraySize_;
+        float size_;
+        float *getPoint(int verticalCoordinate, int HorizontalCoordinate);
+        void setPoint(int verticalCoordinate, int HorizontalCoordinate,GLfloat newValx,GLfloat newValy,GLfloat newValz);
+        int getCorodianteIndex(int verticalCoordinate, int HorizontalCoordinate);
+        GLuint BallBufferObject_;
+
+};
+#include "../src/Ball.cpp"
+#endif // DRAWBALL_H

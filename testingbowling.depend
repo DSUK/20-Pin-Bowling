@@ -1,0 +1,75 @@
+# depslib dependency file v1.0
+1389025650 source:/home/james/Documents/20pinbowling3/testingbowling/main.cpp
+	<cmath>
+	<SDL2/SDL.h>
+	"GLSL_loader.hpp"
+	<glm/glm.hpp>
+	<glm/gtx/rotate_vector.hpp>
+	<GL/glu.h>
+	"GL_camera.hpp"
+	<SDL2/SDL_test_common.h>
+	"include/Ball.h"
+	<bullet/btBulletDynamicsCommon.h>
+	"physWorld.h"
+	"Rect.h"
+	"cylinderDrawer.h"
+
+1386626172 /home/james/Documents/20pinbowling3/testingbowling/GLSL_loader.hpp
+	<fstream>
+	<iostream>
+	<sstream>
+	<SDL2/SDL_opengl.h>
+	"GLSL_loader.cpp"
+
+1386626172 /home/james/Documents/20pinbowling3/testingbowling/GLSL_loader.cpp
+	<vector>
+
+1388708202 source:/home/james/Documents/20pinbowling3/testingbowling/GL_camera.cpp
+	"GL_camera.hpp"
+	<cmath>
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/rotate_vector.hpp>
+
+1388708179 /home/james/Documents/20pinbowling3/testingbowling/GL_camera.hpp
+	<glm/glm.hpp>
+
+1388089957 /home/james/Documents/20pinbowling3/testingbowling/include/Ball.h
+	<glm/glm.hpp>
+	<cmath>
+	<SDL2/SDL.h>
+	<SDL2/SDL_opengl.h>
+	"../src/Ball.cpp"
+
+1388102319 /home/james/Documents/20pinbowling3/testingbowling/src/Ball.cpp
+	"../include/Ball.h"
+
+1388366617 /home/james/Documents/20pinbowling3/testingbowling/Rect.h
+	"Rect.cpp"
+
+1388839791 /home/james/Documents/20pinbowling3/testingbowling/Rect.cpp
+
+1388872196 /home/james/Documents/20pinbowling3/testingbowling/physdrawer.h
+	"Rect.h"
+	"cylinderDrawer.h"
+	<glm/glm.hpp>
+	<glm/gtc/type_ptr.hpp>
+	<bullet/btBulletDynamicsCommon.h>
+	"physdrawer.cpp"
+
+1388873910 /home/james/Documents/20pinbowling3/testingbowling/physdrawer.cpp
+
+1388675356 source:/home/james/Documents/20pinbowling3/testingbowling/BulletObjs.cpp
+
+1388706536 /home/james/Documents/20pinbowling3/testingbowling/physWorld.h
+	<vector>
+	"physdrawer.h"
+	"physWorld.cpp"
+
+1388873142 /home/james/Documents/20pinbowling3/testingbowling/physWorld.cpp
+
+1388851770 /home/james/Documents/20pinbowling3/testingbowling/cylinderDrawer.h
+	<cmath>
+	"cylinderDrawer.cpp"
+
+1388869493 /home/james/Documents/20pinbowling3/testingbowling/cylinderDrawer.cpp
+
