@@ -20,6 +20,7 @@ class GLSLLoader {
 	void link();
 	void attach(GLenum shader_type);
 	void remove(GLenum shader_type);
+	void useProgram();
 	GLuint getProgramObject();
 	~GLSLLoader();
 };

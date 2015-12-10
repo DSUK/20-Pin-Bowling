@@ -1,4 +1,5 @@
 #include "GLSLLoader.hpp"
+//TODO: add file watchers
 GLSLLoader::GLSLLoader() {
 	programObject = glCreateProgram();
 }
@@ -86,6 +87,7 @@ void GLSLLoader::link() {
 
 		std::cerr << "Linker error : " << &errorlog[0] <<std::endl;
 		glDeleteProgram(programObject);
+		exit(okay);
 	}
 }
 
@@ -113,13 +115,14 @@ void GLSLLoader::remove(GLenum shader_type) {
 		break;
 	}
 }
-
+void GLSLLoader::useProgram() {
+	glUseProgram(programObject);
+}
 GLuint GLSLLoader::getProgramObject() {
 	return programObject;
 }
 
 GLSLLoader::~GLSLLoader() {
-
 	glDeleteShader(fragmentShader);
 	glDeleteShader(vertexShader);
 	glDeleteProgram(programObject);
