@@ -1,5 +1,5 @@
-#ifndef GLSL_LOADER_HPP
-#define GLSL_LOADER_HPP
+#pragma once
+
 #define GL_GLEXT_PROTOTYPES 1
 #include <vector>
 #include <fstream>
@@ -24,4 +24,3 @@ class GLSLLoader {
 	GLuint getProgramObject();
 	~GLSLLoader();
 };
-#endif // GLSL_LOADER_HPP
