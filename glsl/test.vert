@@ -1,5 +1,6 @@
-in vec3 vert_vertexpos;
-out vec4 vertexpos;
-main() {
-	vertexpos = vec4(vert_vertexpos,1.0);
+#version 400
+in vec3 in_vertexpos;
+//out vec4 vertexpos;
+void main() {
+	gl_Position = vec4(in_vertexpos,1.0);
 }

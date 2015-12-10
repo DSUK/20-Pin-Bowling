@@ -103,11 +103,63 @@ void testcube() {
 	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,0);
 	glDrawArrays(GL_LINE_STRIP,0,8);
 	//glDrawElements(GL_POINTS,4,GL_UNSIGNED_SHORT,firstface);
-	SDL_assert(glGetError() == GL_NO_ERROR);
 
 }
+void main_loop(SDL_Window *display) {
+	//GLCamera cam(glm::vec3(0,0,2));
+	GLSLLoader shaders;
+	shaders.loadFile(GL_VERTEX_SHADER,"./glsl/test.vert");
+	shaders.loadFile(GL_FRAGMENT_SHADER,"./glsl/test.frag");
+	shaders.compile(GL_VERTEX_SHADER);
+	shaders.compile(GL_FRAGMENT_SHADER);
+	shaders.attach(GL_VERTEX_SHADER);
+	shaders.attach(GL_FRAGMENT_SHADER);
+	shaders.bindAttribute(0, (char*)"in_vertexpos");
+	shaders.link();
+	shaders.useProgram();
+	SDL_Event event;
+	bool cont = true;
+	GLuint VertexArrayId;
+	glGenVertexArrays(1,&VertexArrayId);
+	glBindVertexArray(VertexArrayId);
 
-void mainloop(SDL_Window *display) {
+	GLuint vertexBuffer;
+	static const GLfloat g_vertex_buffer_data[] = {
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f
+	};
+	glEnableVertexAttribArray(0);
+	glGenBuffers(1,&vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	do {
+		shaders.useProgram();
+		GL_CATCH();
+		glClear(GL_COLOR_BUFFER_BIT);
+		GL_CATCH();
+		GL_CATCH();
+		glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
+		GL_CATCH();
+		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+		GL_CATCH();
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		GL_CATCH();
+		//glDisableVertexAttribArray(0);
+
+		while(SDL_PollEvent(&event))
+		{
+			if(event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
+				cont = false;
+		};
+		SDL_GL_SwapWindow(display);
+
+	} while(cont);
+	SDL_Quit();
+}
+
+//void mainloop(SDL_Window *display) {
+void unreachable(SDL_Window *display) {
 
 	GLCamera cam(glm::vec3(0,0,2));
 	GLSLLoader shaders;
@@ -331,8 +383,10 @@ int main() {
 	SDL_CATCH(SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1));
 	SDL_CATCH(SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24));
 	SDL_CATCH(SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &value));
-	SDL_GL_CreateContext(display);
+	if(SDL_GL_CreateContext(display) == NULL)
+		exit(69);
+	glClearColor(0.0,1.0,1.0,1.0);
 	glEnable(GL_DEPTH_TEST);
-	mainloop(display);
+	main_loop(display);
 	return 0;
 }
