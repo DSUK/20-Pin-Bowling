@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
 #include <SDL2/SDL_opengl.h>
 class GLSLLoader {
 	std::string fragSource;
