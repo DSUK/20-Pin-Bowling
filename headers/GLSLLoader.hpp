@@ -17,6 +17,7 @@ class GLSLLoader {
 	public:
 	GLSLLoader();
 	void loadFile(GLenum shader_type, const GLchar* source_file);
+	void bindAttribute(GLint location, char* name);
 	void compile(GLenum shader_type);
 	void link();
 	void attach(GLenum shader_type);

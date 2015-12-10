@@ -121,6 +121,9 @@ void GLSLLoader::useProgram() {
 GLuint GLSLLoader::getProgramObject() {
 	return programObject;
 }
+void GLSLLoader::bindAttribute(GLint location, char* name) {
+	glBindAttribLocation(programObject,location,name);
+}
 
 GLSLLoader::~GLSLLoader() {
 	glDeleteShader(fragmentShader);
