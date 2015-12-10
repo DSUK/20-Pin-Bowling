@@ -59,17 +59,21 @@ void PhysicsWorld::incrementTime(GLfloat amount) {
 }
 
 void PhysicsWorld::drawWorld() {
-
+	GL_CATCH();
 	for(GLuint i = 0; i < bodies.size(); ++i) {
+		GL_CATCH();
 		switch(bodies[i]->body->getCollisionShape()->getShapeType()) {
 
 			case SPHERE_SHAPE_PROXYTYPE:
+				printf("sphere %d\n",i);
 				physicsDrawer.drawBall(bodies[i]);
 			break;
 			case BOX_SHAPE_PROXYTYPE:
+				printf("box %d\n",i);
 				physicsDrawer.drawCuboid(bodies[i]);
 			break;
 			case CYLINDER_SHAPE_PROXYTYPE:
+				printf("cylinder %d\n",i);
 				physicsDrawer.drawCylinder(bodies[i]);
 			break;
 			default:

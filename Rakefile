@@ -12,17 +12,22 @@ task build: [:debug_params,:compile, :link]
 task release: [:release_params,:compile, :link]
 task :link do
 	#`g++ #{INCLUDE} #{PARAMS} -o20pinbowling ./obj/* #{LIBS}`
-	`g++ #{INCLUDE} #{PARAMS} -o20pinbowling #{OBJ_FILES} #{LIBS}`
+	#`g++ #{INCLUDE} #{PARAMS} -o20pinbowling-#{$stage} #{OBJ_FILES} #{LIBS}`
+	`clang++-3.6 #{INCLUDE} #{PARAMS} -o20pinbowling-#{$stage} #{OBJ_FILES} #{LIBS}`
 end
 
 task :debug_params do
-	PARAMS << FileList.new(%w( -gstabs ))
+	$stage = "debug"
+	#PARAMS << FileList.new(%w( -gstabs ))
+	PARAMS << FileList.new(%w( -g ))
 end
 task :release_params do
+	$stage = "release"
 	PARAMS << FileList.new(%w( -O3 ))
 end
 rule ".o" => ->(t){cpp_source(t)} do |f|
-	`g++ #{INCLUDE} #{PARAMS} -c -o#{f.name} #{f.source}`
+	#`g++ #{INCLUDE} #{PARAMS} -c -o#{f.name} #{f.source}`
+	`clang++-3.6 #{INCLUDE} #{PARAMS} -c -o#{f.name} #{f.source}`
 end
 def cpp_source(file)
 	INPUT_FILES.detect{|f| f.pathmap("%n") == file.pathmap("%n")}

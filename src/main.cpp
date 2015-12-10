@@ -15,11 +15,8 @@
 #include "PhysicsWorld.hpp"
 #include "Cuboid.hpp"
 //#include "CylinderDrawer.hpp"
-#define ERLOG(X,Y) \
-		do {if((Y = X)) {\
-			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed " #X "on line %d : %s\n", __LINE__,SDL_GetError()); \
-			exit(Y); \
-		} }while(0)
+#include "debug.hpp"
+
 const float kSqrt2 = 1.41421356237;
 const float kSqrt3Over4 = 0.86602540378;
 const int kWindowWidth = 1024;
@@ -326,16 +323,14 @@ int main() {
 	SDL_Window *display;
 	//static SDL_GLContext context;
 	int value;
-	int status;
-	ERLOG(SDL_Init(SDL_INIT_EVERYTHING),status);
+	SDL_CATCH(SDL_Init(SDL_INIT_EVERYTHING));
 	SDL_LogSetPriority(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO);
 	display = SDL_CreateWindow("20 Pin Bowling",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,kWindowWidth,kWindowHeight,SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
-	ERLOG(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,4),status);
-	ERLOG(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0),status);
-	ERLOG(SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1),status);
-	ERLOG(SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24),status);
-	ERLOG(SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &value),status);
-	//context =
+	SDL_CATCH(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION,4));
+	SDL_CATCH(SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION,0));
+	SDL_CATCH(SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1));
+	SDL_CATCH(SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24));
+	SDL_CATCH(SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &value));
 	SDL_GL_CreateContext(display);
 	glEnable(GL_DEPTH_TEST);
 	mainloop(display);

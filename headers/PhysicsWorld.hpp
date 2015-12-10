@@ -1,5 +1,5 @@
-#ifndef PHYS_WORLD_HPP
-#define PHYS_WORLD_HPP
+#pragma once
+
 #include <vector>
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
@@ -7,6 +7,7 @@
 #include <bullet/btBulletDynamicsCommon.h>
 #include "PhysicsDrawer.hpp"
 #include "PhysicsDrawable.hpp"
+#include "debug.hpp"
 class PhysicsWorld {
 
 	std::vector<PhysicsDrawable*> bodies;
@@ -26,4 +27,3 @@ class PhysicsWorld {
 	void incrementTime(GLfloat amount);
 	void drawWorld();
 };
-#endif

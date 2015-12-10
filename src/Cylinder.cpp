@@ -78,11 +78,23 @@ Cylinder::Cylinder(GLfloat radius, GLfloat height, GLuint slices) {
 }
 void Cylinder::draw()
 {
+	GL_CATCH();
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-
+	GL_CATCH();
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, wallVBOid);
+	GL_CATCH();
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glDrawElements(GL_TRIANGLE_STRIP, 2*sliceCount + 2, GL_UNSIGNED_SHORT, 0);
+	GL_CATCH();
+	//--get somthing to draw
+		glUseProgram();
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
+		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+		glDrawArrays(GL_TRIANGLES,0,3);
+	//--/get somthing to draw
+	GL_CATCH();
+	//glDrawElements(GL_TRIANGLE_STRIP, 2*sliceCount + 2, GL_UNSIGNED_SHORT, 0);
+	GL_CATCH();
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, topVBOid);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -91,6 +103,7 @@ void Cylinder::draw()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bottomVBOid);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glDrawElements(GL_TRIANGLE_FAN, sliceCount + 2, GL_UNSIGNED_SHORT, 0);
+	GL_CATCH();
 }
 Cylinder::~Cylinder()
 {

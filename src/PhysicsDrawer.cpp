@@ -7,21 +7,26 @@ PhysicsDrawer::PhysicsDrawer(GLuint model_matrix, GLuint colour_matrix): ball(1.
 void PhysicsDrawer::drawBall(btRigidBody* ball_body) {
 
 	SDL_assert(ball_body->getCollisionShape()->getShapeType() == SPHERE_SHAPE_PROXYTYPE);
+	GL_CATCH();
 	glUniformMatrix3fv(colourMatrix, 1, GL_FALSE, &glm::mat3(0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0)[0][0]);
 
 	glm::mat4 transfrom_matrix = glm::scale(glm::mat4(1.0), glm::vec3(((btSphereShape*)ball_body ->getCollisionShape())->getRadius()));
+	GL_CATCH();
 
 	float gl_matrix[16];
 	glm::mat4 bullet_matrix;
 	btTransform bullet_transform;
 	ball_body->getMotionState()->getWorldTransform(bullet_transform);
+	GL_CATCH();
 
 	bullet_transform.getOpenGLMatrix(gl_matrix);
 	bullet_matrix = glm::make_mat4(gl_matrix);
 	transfrom_matrix = bullet_matrix*transfrom_matrix;
+	GL_CATCH();
 	glUniformMatrix4fv(modelMatrix, 1, GL_FALSE, &transfrom_matrix[0][0]);
 
 	ball.draw();
+	GL_CATCH();
 }
 
 void PhysicsDrawer::drawBall(PhysicsDrawable* ball_body) {
@@ -47,20 +52,24 @@ void PhysicsDrawer::drawBall(PhysicsDrawable* ball_body) {
 void PhysicsDrawer::drawCuboid(PhysicsDrawable* cuboid) {
 
 	SDL_assert(cuboid->body->getCollisionShape()->getShapeType() == BOX_SHAPE_PROXYTYPE);
+	GL_CATCH();
 	glUniformMatrix3fv(colourMatrix, 1, GL_FALSE, &(cuboid->colour)[0][0]);
 
+	GL_CATCH();
 	btVector3 half_size = ((btBoxShape*)(cuboid->body)->getCollisionShape())->getHalfExtentsWithoutMargin();
 	glm::mat4 transformation_matrix = glm::scale(glm::mat4(1.0), glm::vec3(half_size.x(), half_size.y(), half_size.z()));
 	float gl_matrix[16];
 	glm::mat4 bullet_matrix;
-
+	GL_CATCH();
 	btTransform bullet_transformation;
 	cuboid->body->getMotionState()->getWorldTransform(bullet_transformation);
 	bullet_transformation.getOpenGLMatrix(gl_matrix);
 	bullet_matrix = glm::make_mat4(gl_matrix);
 
+	GL_CATCH();
 	transformation_matrix = bullet_matrix*transformation_matrix;
 	glUniformMatrix4fv(modelMatrix, 1, GL_FALSE, &transformation_matrix[0][0]);
+	GL_CATCH();
 	rectangle.draw();
 }
 

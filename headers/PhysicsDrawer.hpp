@@ -1,5 +1,5 @@
-#ifndef PHYS_DRAWER_HPP
-#define PHYS_DRAWER_HPP
+#pragma once
+
 #define GLM_FORCE_RADIANS
 #ifndef GL_GLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES 1
@@ -13,6 +13,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/transform.hpp>
 #include <bullet/btBulletDynamicsCommon.h>
+#include "debug.hpp"
 class PhysicsDrawer {
 	Ball ball;
 	Cuboid rectangle;
@@ -28,4 +29,3 @@ class PhysicsDrawer {
 	void drawCuboid(PhysicsDrawable* cuboid);
 	void drawCylinder(PhysicsDrawable* cylinder);
 };
-#endif
