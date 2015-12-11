@@ -1,5 +1,5 @@
-#ifndef PHYS_DRAWABLE_HPP
-#define PHYS_DRAWABLE_HPP
+#pragma once
+
 #include <glm/glm.hpp>
 #include <bullet/btBulletDynamicsCommon.h>
 struct PhysicsDrawable {
@@ -14,4 +14,3 @@ struct PhysicsDrawable {
 		delete body;
 	}
 };
-#endif
