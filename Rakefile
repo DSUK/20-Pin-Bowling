@@ -2,7 +2,7 @@ require 'pry'
 LIBS = FileList.new( %w( SDL2_test SDL2 GLEW GL GLU pthread BulletSoftBody BulletDynamics BulletCollision LinearMath )).pathmap("-l%X")
 INCLUDE = FileList.new( %w( headers /usr/include/bullet )).pathmap("-I%X")
 PARAMS = FileList.new %w( -Wall -Werror )
-INPUT_FILES = FileList.new( "src/*")
+INPUT_FILES = FileList.new( "src/*.cpp")
 OBJ_FILES = INPUT_FILES.pathmap("%{^src/,obj/}X.o")
 
 
