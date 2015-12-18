@@ -1,5 +1,5 @@
 #include "PhysicsWorld.hpp"
-PhysicsWorld::PhysicsWorld(GLuint model_matrix, GLuint colour_matrix): physicsDrawer(model_matrix, colour_matrix) {
+PhysicsWorld::PhysicsWorld() {
 
 	collisionConfig = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collisionConfig);
@@ -12,11 +12,11 @@ PhysicsWorld::PhysicsWorld(GLuint model_matrix, GLuint colour_matrix): physicsDr
 
 PhysicsWorld::~PhysicsWorld() {
 
-	for(unsigned int i = 0; i < bodies.size();++i) {
-		dynamicsWorld->removeCollisionObject(bodies[i]->body);
-		btMotionState *ms = bodies[i]->body->getMotionState();
-		btCollisionShape *sp = bodies[i]->body->getCollisionShape();
-		delete bodies[i];
+	for(auto &body : bodies) {
+		dynamicsWorld->removeCollisionObject(body->body);
+		btMotionState *ms = body->body->getMotionState();
+		btCollisionShape *sp = body->body->getCollisionShape();
+		delete body;
 		delete sp;
 		delete ms;
 	}
@@ -25,28 +25,6 @@ PhysicsWorld::~PhysicsWorld() {
 	delete constraintSolver;
 	delete breadphaseInterface;
 	delete dynamicsWorld;
-}
-
-void PhysicsWorld::addBody(btRigidBody* bullet_body) {
-
-	glm::mat3 colour;
-	switch(bullet_body->getCollisionShape()->getShapeType())
-	{
-		case SPHERE_SHAPE_PROXYTYPE:
-			colour = glm::mat3(0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
-		break;
-		case BOX_SHAPE_PROXYTYPE:
-			colour = glm::mat3(1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
-		break;
-		case CYLINDER_SHAPE_PROXYTYPE:
-			colour = glm::mat3(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
-		default:
-		break;
-
-	}
-	PhysicsDrawable *physics_body = new PhysicsDrawable(bullet_body, colour);
-	bodies.push_back(physics_body);
-	dynamicsWorld->addRigidBody(physics_body->body);
 }
 
 void PhysicsWorld::addBody(PhysicsDrawable* physics_body) {
@@ -59,26 +37,7 @@ void PhysicsWorld::incrementTime(GLfloat amount) {
 }
 
 void PhysicsWorld::drawWorld() {
-	GL_CATCH();
-	for(GLuint i = 0; i < bodies.size(); ++i) {
-		GL_CATCH();
-		switch(bodies[i]->body->getCollisionShape()->getShapeType()) {
-
-			case SPHERE_SHAPE_PROXYTYPE:
-				printf("sphere %d\n",i);
-				physicsDrawer.drawBall(bodies[i]);
-			break;
-			case BOX_SHAPE_PROXYTYPE:
-				printf("box %d\n",i);
-				physicsDrawer.drawCuboid(bodies[i]);
-			break;
-			case CYLINDER_SHAPE_PROXYTYPE:
-				printf("cylinder %d\n",i);
-				physicsDrawer.drawCylinder(bodies[i]);
-			break;
-			default:
-
-			break;
-		}
+	for(auto &body : bodies) {
+		body->draw();
 	}
 }

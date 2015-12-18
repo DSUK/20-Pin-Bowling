@@ -1,5 +1,12 @@
 #pragma once
 
+#include "PhysicsDrawable.hpp"
+class Cylinder : public PhysicsDrawable {
+	static void Init();
+	static void DrawCylinder();
+	void draw();
+};
+/*
 #define	GL3_PROTOTYPES 1
 #ifndef GL_GLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES 1
@@ -20,3 +27,4 @@ class Cylinder {
 		GLuint wallVBOid;
 		GLuint sliceCount;
 };
+*/

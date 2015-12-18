@@ -1,6 +1,7 @@
 #pragma once
 
 extern void gl_error(int number, int line, const char *file);
+#include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include <execinfo.h>

@@ -3,7 +3,7 @@
 #define GL3_PROTOTYPES 1
 #endif
 #include <GL/glew.h>
-#include <cmath>
+//#include <cmath>
 #include <SDL2/SDL.h>
 #include "GLSLLoader.hpp"
 #include <glm/glm.hpp>
@@ -17,13 +17,15 @@
 #include "Cuboid.hpp"
 //#include "CylinderDrawer.hpp"
 #include "debug.hpp"
+#include "MatrixSender.hpp"
+#include <glm/gtc/type_ptr.hpp>
 
 const float kSqrt2 = 1.41421356237;
-const float kSqrt3Over4 = 0.86602540378;
+//const float kSqrt3Over4 = 0.86602540378;
 const int kWindowWidth = 1024;
 const int kWindowHeight = 768;
 int triangleNum(int number) {
-	return (number*(number+1))/2;
+	return (number*(number+1)) >> 1;
 }
 
 btVector3 findLeftChild(btVector3 node,btScalar radius) {
@@ -80,6 +82,16 @@ btRigidBody* createCylinder(btVector3 position, btVector3 size, GLfloat mass) {
 	btRigidBody* body = new btRigidBody(RBCI);
 	return body;
 }
+void printmat4(GLfloat *mat4) {
+	printf("print matrix: \n");
+	printf("%f\t%f\t%f\t%f\n",mat4[0],mat4[1],mat4[2],mat4[3]);
+	mat4 += 4;
+	printf("%f\t%f\t%f\t%f\n",mat4[0],mat4[1],mat4[2],mat4[3]);
+	mat4 += 4;
+	printf("%f\t%f\t%f\t%f\n",mat4[0],mat4[1],mat4[2],mat4[3]);
+	mat4 += 4;
+	printf("%f\t%f\t%f\t%f\n",mat4[0],mat4[1],mat4[2],mat4[3]);
+}
 
 void testcube() {
 	GLuint vertexbuffer;
@@ -115,9 +127,19 @@ void main_loop(SDL_Window *display) {
 	shaders.compile(GL_FRAGMENT_SHADER);
 	shaders.attach(GL_VERTEX_SHADER);
 	shaders.attach(GL_FRAGMENT_SHADER);
-	shaders.bindAttribute(0, (char*)"in_vertexpos");
+	shaders.bindAttribute(0, "in_vertexpos");
 	shaders.link();
 	shaders.useProgram();
+	GLuint ass = shaders.uniformLocation("MVP");
+	GL_CATCH();
+	MatrixSender::Init(ass);
+	MatrixSender::SetProjection(glm::perspective(45.0f, 4.0f/3.0f,0.001f,1000.0f));
+	MatrixSender::SetModel(glm::mat4(1.0));
+	MatrixSender::SetView(glm::lookAt(glm::vec3(1,1,1),glm::vec3(0,0,0),glm::vec3(0,1,0)));
+	MatrixSender::CalculateMVP();
+	MatrixSender::SendMVP();
+	GLfloat temp[16];
+	glGetUniformfv(shaders.getProgramObject(),glGetUniformLocation(shaders.getProgramObject(),"MVP"),temp);
 	SDL_Event event;
 	bool cont = true;
 	GLuint VertexArrayId;
@@ -144,9 +166,80 @@ void main_loop(SDL_Window *display) {
 
 		while(SDL_PollEvent(&event))
 		{
-			if(event.type == SDL_KEYUP && event.key.keysym.sym == SDLK_ESCAPE)
-				cont = false;
-		};
+			switch(event.type)
+			{
+				case SDL_KEYDOWN:
+					switch(event.key.keysym.sym)
+					{
+						/*
+						case SDLK_UP:
+							cam.setFowardMove(0.05f);
+						break;
+						case SDLK_DOWN:
+							cam.setFowardMove(-0.05);
+						break;
+						case SDLK_LEFT:
+							cam.setLeftMove(0.05);
+						break;
+						case SDLK_RIGHT:
+							cam.setLeftMove(-0.05);
+						break;
+						case SDLK_SPACE:
+							SDL_ShowCursor(!SDL_ShowCursor(-1));
+							enablemouse = !enablemouse;
+						break;
+						*/
+						case SDLK_k:
+							glDisableVertexAttribArray(0);
+						default:
+						break;
+					}
+				break;
+				case SDL_KEYUP:
+					switch(event.key.keysym.sym)
+					{
+						/*
+						case SDLK_UP:
+							cam.setFowardMove(0);
+						break;
+						case SDLK_DOWN:
+							cam.setFowardMove(0);
+						break;
+						case SDLK_LEFT:
+							cam.setLeftMove(0);
+						break;
+						case SDLK_RIGHT:
+							cam.setLeftMove(0);
+						break;
+						*/
+						case SDLK_ESCAPE:
+							cont = false;
+						break;
+						default:
+						break;
+					}
+				break;
+				/*
+				case SDL_MOUSEBUTTONDOWN:
+					switch(event.button.button)
+					{
+						case SDL_BUTTON_LEFT:
+							glm::vec3 thrower = cam.getPos();
+							btRigidBody *a_sphere = createSphere(btVector3(thrower.x,thrower.y,thrower.z),1,10);
+							thrower = cam.getLook();
+							a_sphere->setLinearVelocity(btVector3(40.0*thrower.x,40.0*thrower.y,40.0*thrower.z));
+							phys.addBody(a_sphere);
+						break;
+					}
+				break;
+				*/
+				case SDL_QUIT:
+					cont = false;
+				break;
+				default:
+				break;
+			}
+		}
 		SDL_GL_SwapWindow(display);
 
 	} while(cont);
@@ -154,6 +247,7 @@ void main_loop(SDL_Window *display) {
 }
 
 //void main_loop(SDL_Window *display) {
+/*
 void unreachable(SDL_Window *display) {
 
 	GLCamera cam(glm::vec3(0,0,2));
@@ -181,7 +275,8 @@ void unreachable(SDL_Window *display) {
 	GLuint Lightpos = glGetUniformLocation(shaders.getProgramObject(),"vert_lightPos");
 	GLuint Lightpos2 = glGetUniformLocation(shaders.getProgramObject(),"vert_lightPos2");
 	GLuint LightCol = glGetUniformLocation(shaders.getProgramObject(),"vert_lightColour");
-	/*GLuint NormalVal=*/ glGetUniformLocation(shaders.getProgramObject(),"vert_normal");
+			//GLuint NormalVal=
+	glGetUniformLocation(shaders.getProgramObject(),"vert_normal");
 	PhysicsWorld phys(ModelMatrixID,ColourID);
 	glUniform3f(Lightpos,1.0,3.0,0.0);
 	glUniform3f(Lightpos2,1.0,3.0,-50.0);
@@ -364,7 +459,7 @@ void unreachable(SDL_Window *display) {
 	}
 
 	SDL_Quit();
-}
+}*/
 
 int main() {
 	SDL_Window *display;

@@ -1,5 +1,17 @@
 #pragma once
 
+#include "PhysicsDrawable.hpp"
+class Cuboid : public PhysicsDrawable {
+	static void DrawCuboid();
+	static GLuint vertexBuffer;
+	public:
+	static void Init();
+	static void Delete();
+	void draw();
+	Cuboid(btVector3 position, btVector3 size, GLfloat mass);
+	~Cuboid();
+};
+/*
 #define GL3_PROTOTYPES 1
 #ifndef GL_GLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES 1
@@ -16,3 +28,4 @@ class Cuboid {
 	private:
 	GLuint vertexBuffer;
 };
+*/

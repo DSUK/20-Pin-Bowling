@@ -1,6 +1,7 @@
 #pragma once
 
 #define GL_GLEXT_PROTOTYPES 1
+#define _ISOC11_SOURCE 1
 #include <vector>
 #include <fstream>
 #include <iostream>
@@ -17,12 +18,13 @@ class GLSLLoader {
 	public:
 	GLSLLoader();
 	void loadFile(GLenum shader_type, const GLchar* source_file);
-	void bindAttribute(GLint location, char* name);
+	void bindAttribute(GLint location, const GLchar* name);
 	void compile(GLenum shader_type);
 	void link();
 	void attach(GLenum shader_type);
 	void remove(GLenum shader_type);
 	void useProgram();
+	GLuint uniformLocation(const GLchar *name);
 	GLuint getProgramObject();
 	~GLSLLoader();
 };

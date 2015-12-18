@@ -121,10 +121,12 @@ void GLSLLoader::useProgram() {
 GLuint GLSLLoader::getProgramObject() {
 	return programObject;
 }
-void GLSLLoader::bindAttribute(GLint location, char* name) {
+void GLSLLoader::bindAttribute(GLint location, const GLchar* name) {
 	glBindAttribLocation(programObject,location,name);
 }
-
+GLuint GLSLLoader::uniformLocation(const GLchar *name) {
+	return glGetUniformLocation(programObject,name);
+}
 GLSLLoader::~GLSLLoader() {
 	glDeleteShader(fragmentShader);
 	glDeleteShader(vertexShader);

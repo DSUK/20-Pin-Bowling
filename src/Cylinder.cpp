@@ -1,4 +1,5 @@
 #include "Cylinder.hpp"
+/*
 Cylinder::Cylinder(GLfloat radius, GLfloat height, GLuint slices) {
 	sliceCount = slices;
 	SDL_assert(slices >= 2);
@@ -112,3 +113,4 @@ Cylinder::~Cylinder()
 	glDeleteBuffers(1, &bottomVBOid);
 	glDeleteBuffers(1, &wallVBOid);
 }
+*/

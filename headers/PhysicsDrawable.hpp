@@ -9,5 +9,5 @@ class PhysicsDrawable {
 	btRigidBody* body;
 	glm::mat3 colour;
 	virtual void draw() = 0;
-	virtual ~PhysicsDrawable();
+	virtual ~PhysicsDrawable() = 0;
 };

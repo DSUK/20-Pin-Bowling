@@ -1,5 +1,13 @@
-#ifndef BALL_HPP
-#define BALL_HPP
+#pragma once
+
+#include "PhysicsDrawable.hpp"
+class Ball : public PhysicsDrawable {
+	static void Init();
+	static void DrawBall();
+	void draw();
+};
+
+/*
 #ifndef GL_GLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES 1
 #endif
@@ -22,4 +30,4 @@ class Ball {
 	GLuint segmentCount;
 
 };
-#endif // _BALL_HPP
+*/

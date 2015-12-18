@@ -1,5 +1,5 @@
 #include "Ball.hpp"
-
+/*
 Ball::Ball(GLfloat _radius, GLuint segment_resolution, GLuint segment_count) {
 	segmentCount = segment_count;
 	segmentResolution= segment_resolution;
@@ -53,3 +53,4 @@ void Ball::draw() {
 	}
 
 }
+*/

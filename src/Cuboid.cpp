@@ -1,4 +1,46 @@
 #include "Cuboid.hpp"
+//HACK: Needed to stop the compiler complaining, value never used.
+GLuint Cuboid::vertexBuffer = 0;
+
+Cuboid::Cuboid(btVector3 position, btVector3 size, GLfloat mass) {
+	btTransform trans;
+	trans.setIdentity();
+	trans.setOrigin(position);
+	btBoxShape *box = new btBoxShape(size/2.0);
+	btVector3 inert(0.0,0.0,0.0);
+	if(mass != 0.0) {
+		box->calculateLocalInertia(mass,inert);
+	}
+	btMotionState *motion = new btDefaultMotionState(trans);
+	btRigidBody::btRigidBodyConstructionInfo RBCI(mass,motion,box,inert);
+	body = new btRigidBody(RBCI);
+}
+Cuboid::~Cuboid() {
+	delete body;
+}
+void Cuboid::Init() {
+	GLfloat vertexes[] ={
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f, 1.0f,
+		-1.0f, 1.0f, -1.0f,
+		-1.0f, 1.0f, 1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, 1.0f,
+		1.0f, 1.0f, -1.0f,
+		1.0f, 1.0f, 1.0f
+	};
+
+	glGenBuffers(1, &vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
+
+}
+void Cuboid::Delete() {
+	glDeleteBuffers(1, &vertexBuffer);
+}
+void Cuboid::draw() {
+}
+/*
 Cuboid::Cuboid(GLfloat height, GLfloat width, GLfloat depth) {
 
 	height /= 2.0;
@@ -17,11 +59,8 @@ Cuboid::Cuboid(GLfloat height, GLfloat width, GLfloat depth) {
 	};
 
 	glGenBuffers(1, &vertexBuffer);
-	GL_CATCH();
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	GL_CATCH();
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
-	GL_CATCH();
 }
 
 void Cuboid::draw() {
@@ -43,15 +82,6 @@ void Cuboid::draw() {
 	 glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(firstface), firstface, GL_STATIC_DRAW);
 	 GL_CATCH();
 	 //glDrawElements(GL_TRIANGLE_STRIP, 16, GL_UNSIGNED_SHORT, 0);
-	 //force work, here
-		GLuint tempVBO;
-		GLfloat tempTriangle[] = {1.0,1.0,0.0, -1.0,1.0,0.0, -1.0, -1.0, 0.0};
-		glGenBuffers(1,&tempVBO);
-		glBindBuffer(GL_ARRAY_BUFFER,tempVBO);
-		glBufferData(GL_ARRAY_BUFFER, 9*sizeof(GL_FLOAT), &tempTriangle[0], GL_STATIC_DRAW);
-		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,0);
-		glDrawArrays(GL_TRIANGLES, 0,3);
-	 //end force work	 
 
 	 GL_CATCH();
 	 glDeleteBuffers(1, &indexBuffer);
@@ -61,3 +91,4 @@ void Cuboid::draw() {
 Cuboid::~Cuboid() {
 	 glDeleteBuffers(1, &vertexBuffer);
 }
+*/
