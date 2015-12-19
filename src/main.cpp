@@ -119,7 +119,7 @@ void testcube() {
 
 }
 void main_loop(SDL_Window *display) {
-	//GLCamera cam(glm::vec3(0,0,2));
+	GLCamera camera(glm::vec3(0,0,2));
 	GLSLLoader shaders;
 	shaders.loadFile(GL_VERTEX_SHADER,"./glsl/test.vert");
 	shaders.loadFile(GL_FRAGMENT_SHADER,"./glsl/test.frag");
@@ -157,7 +157,6 @@ void main_loop(SDL_Window *display) {
 	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	do {
-		shaders.useProgram();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
@@ -171,19 +170,19 @@ void main_loop(SDL_Window *display) {
 				case SDL_KEYDOWN:
 					switch(event.key.keysym.sym)
 					{
-						/*
 						case SDLK_UP:
-							cam.setFowardMove(0.05f);
+							camera.setFowardMove(0.05f);
 						break;
 						case SDLK_DOWN:
-							cam.setFowardMove(-0.05);
+							camera.setFowardMove(-0.05);
 						break;
 						case SDLK_LEFT:
-							cam.setLeftMove(0.05);
+							camera.setLeftMove(0.05);
 						break;
 						case SDLK_RIGHT:
-							cam.setLeftMove(-0.05);
+							camera.setLeftMove(-0.05);
 						break;
+						/*
 						case SDLK_SPACE:
 							SDL_ShowCursor(!SDL_ShowCursor(-1));
 							enablemouse = !enablemouse;
@@ -198,20 +197,18 @@ void main_loop(SDL_Window *display) {
 				case SDL_KEYUP:
 					switch(event.key.keysym.sym)
 					{
-						/*
 						case SDLK_UP:
-							cam.setFowardMove(0);
+							camera.setFowardMove(0);
 						break;
 						case SDLK_DOWN:
-							cam.setFowardMove(0);
+							camera.setFowardMove(0);
 						break;
 						case SDLK_LEFT:
-							cam.setLeftMove(0);
+							camera.setLeftMove(0);
 						break;
 						case SDLK_RIGHT:
-							cam.setLeftMove(0);
+							camera.setLeftMove(0);
 						break;
-						*/
 						case SDLK_ESCAPE:
 							cont = false;
 						break;
@@ -224,9 +221,9 @@ void main_loop(SDL_Window *display) {
 					switch(event.button.button)
 					{
 						case SDL_BUTTON_LEFT:
-							glm::vec3 thrower = cam.getPos();
+							glm::vec3 thrower = camera.getPos();
 							btRigidBody *a_sphere = createSphere(btVector3(thrower.x,thrower.y,thrower.z),1,10);
-							thrower = cam.getLook();
+							thrower = camera.getLook();
 							a_sphere->setLinearVelocity(btVector3(40.0*thrower.x,40.0*thrower.y,40.0*thrower.z));
 							phys.addBody(a_sphere);
 						break;
@@ -240,6 +237,10 @@ void main_loop(SDL_Window *display) {
 				break;
 			}
 		}
+		camera.move();
+		camera.setMatrixSenderViewMatrix();
+		MatrixSender::CalculateMVP();
+		MatrixSender::SendMVP();
 		SDL_GL_SwapWindow(display);
 
 	} while(cont);
