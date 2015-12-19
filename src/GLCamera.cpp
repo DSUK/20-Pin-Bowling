@@ -12,6 +12,10 @@ glm::mat4 GLCamera::calculateViewMatrix() {
 	return glm::lookAt(position,position + lookVector, upVector);
 }
 
+void GLCamera::setMatrixSenderViewMatrix() const {
+	MatrixSender::SetView(glm::lookAt(position,position + lookVector, upVector));
+}
+
 void GLCamera::rotateXY(int x, int y) {
 	xzRotation += static_cast<float>(x)/360;
 	yRotation -= static_cast<float>(y)/360;
@@ -37,10 +41,10 @@ void GLCamera::move() {
 	position += lookVector*upMove + leftMove*leftVector;
 }
 
-glm::vec3 GLCamera::getLook() {
+glm::vec3 GLCamera::getLook() const {
 	return lookVector;
 }
 
-glm::vec3 GLCamera::getPos() {
+glm::vec3 GLCamera::getPos() const {
 	return position;
 }
