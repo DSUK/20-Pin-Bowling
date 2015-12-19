@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-#include <SDL/SDL.h>
+#include <SDL2/SDL_assert.h>
 class MatrixSender {
 	static glm::mat4 MVP , Projection, Model, View;
 	static GLuint ShaderMVPLocation;
