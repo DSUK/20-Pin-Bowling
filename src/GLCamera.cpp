@@ -22,11 +22,11 @@ void GLCamera::rotateXY(int x, int y) {
 	float sin_xz = sin(xzRotation);
 	float cos_xz = cos(xzRotation);
 	//xz_deg = xzRotation*180/M_PI;
-	float y_deg = yRotation*180/M_PI;
+	//float y_deg = yRotation*180/M_PI;
 	leftVector = glm::vec3(cos_xz,0,sin_xz);
 	glm::vec3 temp_vec = glm::vec3(sin_xz,0,-cos_xz); //"face vector"
-	upVector = glm::rotate(temp_vec,y_deg+90,leftVector);
-	lookVector = glm::rotate(temp_vec,y_deg,leftVector);
+	upVector = glm::rotate(temp_vec,yRotation+90,leftVector);
+	lookVector = glm::rotate(temp_vec,yRotation,leftVector);
 }
 
 void GLCamera::setFowardMove(float amount) {

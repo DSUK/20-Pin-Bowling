@@ -24,6 +24,8 @@ const float kSqrt2 = 1.41421356237;
 //const float kSqrt3Over4 = 0.86602540378;
 const int kWindowWidth = 1024;
 const int kWindowHeight = 768;
+const int kWindowCentreX = kWindowWidth/2;
+const int kWindowCentreY = kWindowHeight/2;
 int triangleNum(int number) {
 	return (number*(number+1)) >> 1;
 }
@@ -121,6 +123,7 @@ void testcube() {
 void main_loop(SDL_Window *display) {
 	GLCamera camera(glm::vec3(0,0,2));
 	GLSLLoader shaders;
+	bool enablemouse = false;
 	shaders.loadFile(GL_VERTEX_SHADER,"./glsl/test.vert");
 	shaders.loadFile(GL_FRAGMENT_SHADER,"./glsl/test.frag");
 	shaders.compile(GL_VERTEX_SHADER);
@@ -171,23 +174,25 @@ void main_loop(SDL_Window *display) {
 					switch(event.key.keysym.sym)
 					{
 						case SDLK_UP:
+						case SDLK_w:
 							camera.setFowardMove(0.05f);
 						break;
 						case SDLK_DOWN:
+						case SDLK_s:
 							camera.setFowardMove(-0.05);
 						break;
 						case SDLK_LEFT:
+						case SDLK_a:
 							camera.setLeftMove(0.05);
 						break;
 						case SDLK_RIGHT:
+						case SDLK_d:
 							camera.setLeftMove(-0.05);
 						break;
-						/*
 						case SDLK_SPACE:
 							SDL_ShowCursor(!SDL_ShowCursor(-1));
 							enablemouse = !enablemouse;
 						break;
-						*/
 						case SDLK_k:
 							glDisableVertexAttribArray(0);
 						default:
@@ -198,16 +203,20 @@ void main_loop(SDL_Window *display) {
 					switch(event.key.keysym.sym)
 					{
 						case SDLK_UP:
-							camera.setFowardMove(0);
+						case SDLK_w:
+							camera.setFowardMove(0.0f);
 						break;
 						case SDLK_DOWN:
-							camera.setFowardMove(0);
+						case SDLK_s:
+							camera.setFowardMove(0.0);
 						break;
 						case SDLK_LEFT:
-							camera.setLeftMove(0);
+						case SDLK_a:
+							camera.setLeftMove(0.0);
 						break;
 						case SDLK_RIGHT:
-							camera.setLeftMove(0);
+						case SDLK_d:
+							camera.setLeftMove(0.0);
 						break;
 						case SDLK_ESCAPE:
 							cont = false;
@@ -235,6 +244,14 @@ void main_loop(SDL_Window *display) {
 				break;
 				default:
 				break;
+			}
+			if(enablemouse) {
+				int mX,mY;
+				mX = mY = 0;
+				SDL_GetMouseState(&mX,&mY);
+				camera.rotateXY(mX-kWindowCentreX,mY-kWindowCentreY);
+				SDL_WarpMouseInWindow(display,kWindowCentreX,kWindowCentreY);
+
 			}
 		}
 		camera.move();
