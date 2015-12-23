@@ -2,9 +2,9 @@
 
 #include "PhysicsDrawable.hpp"
 class Cuboid : public PhysicsDrawable {
-	static void DrawCuboid();
 	static GLuint vertexBuffer;
 	public:
+	static void DrawCuboid();
 	static void Init();
 	static void Delete();
 	void draw();

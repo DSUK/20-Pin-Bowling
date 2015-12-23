@@ -159,12 +159,13 @@ void main_loop(SDL_Window *display) {
 	glGenBuffers(1,&vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	Cuboid::Init();
 	do {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+		glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		//glDisableVertexAttribArray(0);
+		Cuboid::DrawCuboid();
 
 		while(SDL_PollEvent(&event))
 		{
@@ -179,15 +180,15 @@ void main_loop(SDL_Window *display) {
 						break;
 						case SDLK_DOWN:
 						case SDLK_s:
-							camera.setFowardMove(-0.05);
+							camera.setFowardMove(-0.05f);
 						break;
 						case SDLK_LEFT:
 						case SDLK_a:
-							camera.setLeftMove(0.05);
+							camera.setLeftMove(0.05f);
 						break;
 						case SDLK_RIGHT:
 						case SDLK_d:
-							camera.setLeftMove(-0.05);
+							camera.setLeftMove(-0.05f);
 						break;
 						case SDLK_SPACE:
 							SDL_ShowCursor(!SDL_ShowCursor(-1));
@@ -208,15 +209,15 @@ void main_loop(SDL_Window *display) {
 						break;
 						case SDLK_DOWN:
 						case SDLK_s:
-							camera.setFowardMove(0.0);
+							camera.setFowardMove(0.0f);
 						break;
 						case SDLK_LEFT:
 						case SDLK_a:
-							camera.setLeftMove(0.0);
+							camera.setLeftMove(0.0f);
 						break;
 						case SDLK_RIGHT:
 						case SDLK_d:
-							camera.setLeftMove(0.0);
+							camera.setLeftMove(0.0f);
 						break;
 						case SDLK_ESCAPE:
 							cont = false;
@@ -261,6 +262,7 @@ void main_loop(SDL_Window *display) {
 		SDL_GL_SwapWindow(display);
 
 	} while(cont);
+	Cuboid::Delete();
 	SDL_Quit();
 }
 

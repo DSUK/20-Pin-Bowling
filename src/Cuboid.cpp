@@ -21,13 +21,13 @@ Cuboid::~Cuboid() {
 void Cuboid::Init() {
 	GLfloat vertexes[] ={
 		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, 1.0f,
-		-1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, 1.0f, -1.0f,
-		1.0f, 1.0f, 1.0f
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f
 	};
 
 	glGenBuffers(1, &vertexBuffer);
@@ -39,6 +39,10 @@ void Cuboid::Delete() {
 	glDeleteBuffers(1, &vertexBuffer);
 }
 void Cuboid::draw() {
+}
+void Cuboid::DrawCuboid(){
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glDrawArrays(GL_TRIANGLES,0,6);
 }
 /*
 Cuboid::Cuboid(GLfloat height, GLfloat width, GLfloat depth) {
