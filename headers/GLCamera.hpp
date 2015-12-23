@@ -7,6 +7,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/glm.hpp>
 #include "MatrixSender.hpp"
+#include <SDL2/SDL.h>
 class GLCamera {
 	float yRotation;
 	float xzRotation;
@@ -20,10 +21,10 @@ class GLCamera {
 	public:
 	GLCamera(glm::vec3 pos);
 	glm::mat4 calculateViewMatrix();
-	void rotateXY(int x, int y);
+	void rotateXY(int x, int y, Uint32 time);
 	void setFowardMove(float amount);
 	void setLeftMove(float amount);
-	void move();
+	void move(Uint32 time);
 	void setMatrixSenderViewMatrix() const;
 	glm::vec3 getLook() const;
 	glm::vec3 getPos() const;

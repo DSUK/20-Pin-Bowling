@@ -155,17 +155,20 @@ void main_loop(SDL_Window *display) {
 		1.0f, -1.0f, 0.1f,
 		0.0f, 1.0f, 0.1f
 	};
+	Uint32 loop_time = SDL_GetTicks();
+	Uint32 time = 0;
 	glEnableVertexAttribArray(0);
 	glGenBuffers(1,&vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	Cuboid::Init();
 	do {
+		GL_CATCH();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+		Cuboid::DrawCuboid();
 		glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		Cuboid::DrawCuboid();
 
 		while(SDL_PollEvent(&event))
 		{
@@ -195,7 +198,7 @@ void main_loop(SDL_Window *display) {
 							enablemouse = !enablemouse;
 						break;
 						case SDLK_k:
-							glDisableVertexAttribArray(0);
+							//glDisableVertexAttribArray(0);
 						default:
 						break;
 					}
@@ -250,17 +253,18 @@ void main_loop(SDL_Window *display) {
 				int mX,mY;
 				mX = mY = 0;
 				SDL_GetMouseState(&mX,&mY);
-				camera.rotateXY(mX-kWindowCentreX,mY-kWindowCentreY);
+				camera.rotateXY(mX-kWindowCentreX,mY-kWindowCentreY,time);
 				SDL_WarpMouseInWindow(display,kWindowCentreX,kWindowCentreY);
 
 			}
 		}
-		camera.move();
+		camera.move(time);
 		camera.setMatrixSenderViewMatrix();
 		MatrixSender::CalculateMVP();
 		MatrixSender::SendMVP();
 		SDL_GL_SwapWindow(display);
-
+		time = SDL_GetTicks() - loop_time;
+		loop_time += time;
 	} while(cont);
 	Cuboid::Delete();
 	SDL_Quit();

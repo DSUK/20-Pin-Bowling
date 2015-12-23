@@ -16,13 +16,12 @@ void GLCamera::setMatrixSenderViewMatrix() const {
 	MatrixSender::SetView(glm::lookAt(position,position + lookVector, upVector));
 }
 
-void GLCamera::rotateXY(int x, int y) {
-	xzRotation += static_cast<float>(x)/360;
-	yRotation -= static_cast<float>(y)/360;
+void GLCamera::rotateXY(int x, int y,Uint32 time) {
+	GLfloat ftime = static_cast<float>(time)/9600.0f;
+	xzRotation += static_cast<float>(x)*ftime;
+	yRotation -= static_cast<float>(y)*ftime;
 	float sin_xz = sin(xzRotation);
 	float cos_xz = cos(xzRotation);
-	//xz_deg = xzRotation*180/M_PI;
-	//float y_deg = yRotation*180/M_PI;
 	leftVector = glm::vec3(cos_xz,0,sin_xz);
 	glm::vec3 temp_vec = glm::vec3(sin_xz,0,-cos_xz); //"face vector"
 	upVector = glm::rotate(temp_vec,yRotation+90,leftVector);
@@ -37,8 +36,8 @@ void GLCamera::setLeftMove(float amount) {
 	leftMove = -amount;
 }
 
-void GLCamera::move() {
-	position += lookVector*upMove + leftMove*leftVector;
+void GLCamera::move(Uint32 time) {
+	position += (lookVector*upMove + leftMove*leftVector)*static_cast<float>(time/16);
 }
 
 glm::vec3 GLCamera::getLook() const {

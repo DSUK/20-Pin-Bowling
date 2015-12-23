@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <SDL2/SDL_opengl.h>
 #include <bullet/btBulletDynamicsCommon.h>
+#include "debug.hpp"
 class PhysicsDrawable {
 	public:
 	btRigidBody* body;

@@ -33,6 +33,7 @@ void Cuboid::Init() {
 	glGenBuffers(1, &vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
+	GL_CATCH();
 
 }
 void Cuboid::Delete() {
