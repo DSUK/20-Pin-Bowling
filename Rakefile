@@ -13,6 +13,7 @@ task release: [:release_params,:compile, :link]
 task :link do
 	#`g++ #{INCLUDE} #{PARAMS} -o20pinbowling ./obj/* #{LIBS}`
 	#`g++ #{INCLUDE} #{PARAMS} -o20pinbowling-#{$stage} #{OBJ_FILES} #{LIBS}`
+	puts "Linking #{$stage}"
 	`clang++-3.6 #{INCLUDE} #{PARAMS} -o20pinbowling-#{$stage} #{OBJ_FILES} #{LIBS}`
 end
 
