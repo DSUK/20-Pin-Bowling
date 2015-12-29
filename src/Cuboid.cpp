@@ -47,6 +47,7 @@ void Cuboid::Init() {
 }
 void Cuboid::Delete() {
 	glDeleteBuffers(1, &vertexBuffer);
+	glDeleteBuffers(1, &indexBuffer);
 }
 void Cuboid::draw() {
 }
