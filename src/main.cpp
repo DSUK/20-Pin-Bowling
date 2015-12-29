@@ -166,9 +166,17 @@ void main_loop(SDL_Window *display) {
 		GL_CATCH();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
+		MatrixSender::SetModel(glm::mat4(1.0f));
+		MatrixSender::CalculateMVP();
+		MatrixSender::SendMVP();
 		Cuboid::DrawCuboid();
-		//glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		MatrixSender::SetModel(glm::mat4(0.5f,0.0f, 0.0f, 0.0f,
+						0.0f, 1.0f, 0.0f, 0.0f,
+						0.0f, 0.0f, 1.0f, 0.0f,
+						0.0f, 5.0f, 0.0f, 1.0f));
+		MatrixSender::CalculateMVP();
+		MatrixSender::SendMVP();
+		Cuboid::DrawCuboid();
 
 		while(SDL_PollEvent(&event))
 		{
