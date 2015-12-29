@@ -167,8 +167,8 @@ void main_loop(SDL_Window *display) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
 		Cuboid::DrawCuboid();
-		glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		while(SDL_PollEvent(&event))
 		{

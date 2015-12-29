@@ -3,6 +3,7 @@
 #include "PhysicsDrawable.hpp"
 class Cuboid : public PhysicsDrawable {
 	static GLuint vertexBuffer;
+	static GLuint indexBuffer;
 	public:
 	static void DrawCuboid();
 	static void Init();

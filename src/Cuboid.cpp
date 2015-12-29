@@ -1,6 +1,6 @@
 #include "Cuboid.hpp"
-//HACK: Needed to stop the compiler complaining, value never used.
 GLuint Cuboid::vertexBuffer = 0;
+GLuint Cuboid::indexBuffer = 0;
 
 Cuboid::Cuboid(btVector3 position, btVector3 size, GLfloat mass) {
 	btTransform trans;
@@ -29,10 +29,19 @@ void Cuboid::Init() {
 		 1.0f,  1.0f, -1.0f,
 		 1.0f,  1.0f,  1.0f
 	};
+	GLushort indecies[] = {
+		0,1,2,0,1,4,0,2,4,
+		1,4,5,1,5,7,4,5,7,
+		1,3,7,2,3,7,1,2,3,
+		2,4,6,2,6,7,4,6,7
+	};
 
 	glGenBuffers(1, &vertexBuffer);
+	glGenBuffers(1, &indexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indecies), indecies, GL_STATIC_DRAW);
 	GL_CATCH();
 
 }
@@ -43,7 +52,9 @@ void Cuboid::draw() {
 }
 void Cuboid::DrawCuboid(){
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glDrawArrays(GL_TRIANGLES,0,6);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	//glDrawArrays(GL_TRIANGLES,0,6);
+	glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_SHORT,(void*)0);
 }
 /*
 Cuboid::Cuboid(GLfloat height, GLfloat width, GLfloat depth) {
