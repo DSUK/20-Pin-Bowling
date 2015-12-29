@@ -1,10 +1,20 @@
 #pragma once
 
 #include "PhysicsDrawable.hpp"
+#include <vector>
 class Ball : public PhysicsDrawable {
-	static void Init();
+	static GLuint vertexBuffer;
+	static GLuint trianglePointCount;
+	static void CalculateRecursivePoints(std::vector<GLfloat> &verts,glm::vec3 first, glm::vec3 second, glm::vec3 third
+		,GLuint level);
+
+	public:
 	static void DrawBall();
+	static void Init();
+	static void Delete();
 	void draw();
+	Ball(btVector3 position, btVector3 size, GLfloat mass);
+	~Ball();
 };
 
 /*

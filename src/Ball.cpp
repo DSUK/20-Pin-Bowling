@@ -1,4 +1,53 @@
 #include "Ball.hpp"
+GLuint Ball::vertexBuffer = 0;
+GLuint Ball::trianglePointCount = 0;
+
+void Ball::Init() {
+	std::vector<GLfloat> vertices;
+	trianglePointCount = 0;
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), 4);
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), 4);
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), 4);
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), 4);
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), 4);
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), 4);
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), 4);
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), 4);
+	glGenBuffers(1,&vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(GLfloat), &vertices,GL_STATIC_DRAW);
+	GL_CATCH();
+}
+
+void Ball::CalculateRecursivePoints(std::vector<GLfloat> &points,glm::vec3 a, glm::vec3 b, glm::vec3 c, GLuint level) {
+	if(level != 0) {
+		glm::vec3 ab = glm::normalize(a + b);
+		glm::vec3 ac = glm::normalize(a + c);
+		glm::vec3 bc = glm::normalize(b + c);
+		CalculateRecursivePoints(points,a,ab,ac,level-1);
+		CalculateRecursivePoints(points,b,ab,bc,level-1);
+		CalculateRecursivePoints(points,c,ac,bc,level-1);
+		CalculateRecursivePoints(points,ab,ac,bc,level-1);
+	} else {
+		points.push_back(a.x);
+		points.push_back(a.y);
+		points.push_back(a.z);
+		points.push_back(b.x);
+		points.push_back(b.y);
+		points.push_back(b.z);
+		points.push_back(c.x);
+		points.push_back(c.y);
+		points.push_back(c.z);
+		Ball::trianglePointCount += 3;
+	}
+}
+void Ball::DrawBall() {
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glDrawArrays(GL_TRIANGLES,0,trianglePointCount);
+};
+void Ball::Delete() {
+	glDeleteBuffers(1,&vertexBuffer);
+}
 /*
 Ball::Ball(GLfloat _radius, GLuint segment_resolution, GLuint segment_count) {
 	segmentCount = segment_count;
