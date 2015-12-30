@@ -162,6 +162,7 @@ void main_loop(SDL_Window *display) {
 	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	Cuboid::Init();
+	Ball::Init();
 	do {
 		GL_CATCH();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -169,7 +170,7 @@ void main_loop(SDL_Window *display) {
 		MatrixSender::SetModel(glm::mat4(1.0f));
 		MatrixSender::CalculateMVP();
 		MatrixSender::SendMVP();
-		Cuboid::DrawCuboid();
+		Ball::DrawBall();
 		MatrixSender::SetModel(glm::mat4(0.5f,0.0f, 0.0f, 0.0f,
 						0.0f, 1.0f, 0.0f, 0.0f,
 						0.0f, 0.0f, 1.0f, 0.0f,
@@ -275,6 +276,7 @@ void main_loop(SDL_Window *display) {
 		loop_time += time;
 	} while(cont);
 	Cuboid::Delete();
+	Ball::Delete();
 	SDL_Quit();
 }
 

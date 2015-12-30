@@ -1,21 +1,23 @@
 #include "Ball.hpp"
 GLuint Ball::vertexBuffer = 0;
 GLuint Ball::trianglePointCount = 0;
-
+#define BALL_RECUR_LEVEL 5
 void Ball::Init() {
 	std::vector<GLfloat> vertices;
+	//ball recur level 5
+	//vertices.reserve(24576);
 	trianglePointCount = 0;
-	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), 4);
-	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), 4);
-	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), 4);
-	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), 4);
-	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), 4);
-	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), 4);
-	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), 4);
-	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), 4);
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
 	glGenBuffers(1,&vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(GLfloat), &vertices,GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(GLfloat), &vertices[0],GL_STATIC_DRAW);
 	GL_CATCH();
 }
 
@@ -43,6 +45,7 @@ void Ball::CalculateRecursivePoints(std::vector<GLfloat> &points,glm::vec3 a, gl
 }
 void Ball::DrawBall() {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE,0,0);
 	glDrawArrays(GL_TRIANGLES,0,trianglePointCount);
 };
 void Ball::Delete() {

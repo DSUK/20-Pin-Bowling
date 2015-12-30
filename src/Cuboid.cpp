@@ -53,5 +53,7 @@ void Cuboid::draw() {
 }
 void Cuboid::DrawCuboid(){
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE,0,0);
 	glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_SHORT,(void*)0);
 }
