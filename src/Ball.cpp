@@ -1,11 +1,11 @@
 #include "Ball.hpp"
 GLuint Ball::vertexBuffer = 0;
 GLuint Ball::trianglePointCount = 0;
-#define BALL_RECUR_LEVEL 5
+constexpr GLuint BALL_RECUR_LEVEL = 5;
+constexpr GLuint BALL_VECTOR_RESERVE = BALL_RECUR_LEVEL * 24*(1 << 2*BALL_RECUR_LEVEL);
 void Ball::Init() {
 	std::vector<GLfloat> vertices;
-	//ball recur level 5
-	//vertices.reserve(24576);
+	vertices.reserve(BALL_VECTOR_RESERVE);
 	trianglePointCount = 0;
 	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
 	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
