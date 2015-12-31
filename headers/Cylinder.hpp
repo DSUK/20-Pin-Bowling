@@ -1,9 +1,15 @@
 #pragma once
 
 #include "PhysicsDrawable.hpp"
+#include <vector>
 class Cylinder : public PhysicsDrawable {
-	static void Init();
+	static GLuint vertexBuffer;
+	static GLuint indexBuffer;
+	static GLuint vertexLength;
+	public:
 	static void DrawCylinder();
+	static void Init();
+	static void Delete();
 	void draw();
 };
 /*

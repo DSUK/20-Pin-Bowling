@@ -11,11 +11,11 @@
 #include "GLCamera.hpp"
 #include <SDL2/SDL_test_common.h>
 #include <SDL2/SDL_opengl.h>
-#include "Ball.hpp"
 #include <bullet/btBulletDynamicsCommon.h>
 #include "PhysicsWorld.hpp"
+#include "Ball.hpp"
 #include "Cuboid.hpp"
-//#include "CylinderDrawer.hpp"
+#include "Cylinder.hpp"
 #include "debug.hpp"
 #include "MatrixSender.hpp"
 #include <glm/gtc/type_ptr.hpp>
@@ -163,6 +163,7 @@ void main_loop(SDL_Window *display) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	Cuboid::Init();
 	Ball::Init();
+	Cylinder::Init();
 	do {
 		GL_CATCH();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -171,10 +172,17 @@ void main_loop(SDL_Window *display) {
 		MatrixSender::CalculateMVP();
 		MatrixSender::SendMVP();
 		Ball::DrawBall();
-		MatrixSender::SetModel(glm::mat4(0.5f,0.0f, 0.0f, 0.0f,
+		MatrixSender::SetModel(glm::mat4(1.0f,0.0f, 0.0f, 0.0f,
 						0.0f, 1.0f, 0.0f, 0.0f,
 						0.0f, 0.0f, 1.0f, 0.0f,
 						0.0f, 5.0f, 0.0f, 1.0f));
+		MatrixSender::CalculateMVP();
+		MatrixSender::SendMVP();
+		Cylinder::DrawCylinder();
+		MatrixSender::SetModel(glm::mat4(1.0f,0.0f, 0.0f, 0.0f,
+						0.0f, 1.0f, 0.0f, 0.0f,
+						0.0f, 0.0f, 1.0f, 0.0f,
+						5.0f, 0.0f, 0.0f, 1.0f));
 		MatrixSender::CalculateMVP();
 		MatrixSender::SendMVP();
 		Cuboid::DrawCuboid();
@@ -275,6 +283,7 @@ void main_loop(SDL_Window *display) {
 		time = SDL_GetTicks() - loop_time;
 		loop_time += time;
 	} while(cont);
+	Cylinder::Delete();
 	Cuboid::Delete();
 	Ball::Delete();
 	SDL_Quit();
