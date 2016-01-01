@@ -13,9 +13,9 @@ PhysicsWorld::PhysicsWorld() {
 PhysicsWorld::~PhysicsWorld() {
 
 	for(auto &body : bodies) {
-		dynamicsWorld->removeCollisionObject(body->body);
-		btMotionState *ms = body->body->getMotionState();
-		btCollisionShape *sp = body->body->getCollisionShape();
+		dynamicsWorld->removeCollisionObject(body->getBody());
+		btMotionState *ms = body->getBody()->getMotionState();
+		btCollisionShape *sp = body->getBody()->getCollisionShape();
 		delete body;
 		delete sp;
 		delete ms;
@@ -29,7 +29,7 @@ PhysicsWorld::~PhysicsWorld() {
 
 void PhysicsWorld::addBody(PhysicsDrawable* physics_body) {
 	bodies.push_back(physics_body);
-	dynamicsWorld->addRigidBody(physics_body->body);
+	dynamicsWorld->addRigidBody(physics_body->getBody());
 }
 
 void PhysicsWorld::incrementTime(GLfloat amount) {

@@ -49,7 +49,16 @@ void Cuboid::Delete() {
 	glDeleteBuffers(1, &vertexBuffer);
 	glDeleteBuffers(1, &indexBuffer);
 }
-void Cuboid::draw() {
+void Cuboid::draw() const {
+	btVector3 half_size = ((btBoxShape*)(body->getCollisionShape()))->getHalfExtentsWithoutMargin();
+	GLfloat matrix[16];
+	btTransform bullet_transform;
+	body->getMotionState()->getWorldTransform(bullet_transform);
+	bullet_transform.getOpenGLMatrix(matrix);
+	MatrixSender::SetModel(glm::scale(glm::make_mat4(matrix),glm::vec3(half_size.x(),half_size.y(),half_size.z())));
+	MatrixSender::CalculateMVP();
+	MatrixSender::SendMVP();
+	DrawCuboid();
 }
 void Cuboid::DrawCuboid(){
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);

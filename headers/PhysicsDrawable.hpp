@@ -2,13 +2,20 @@
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+//scale
+#include <glm/gtc/matrix_transform.hpp>
+//make_mat4
+#include <glm/gtc/type_ptr.hpp>
 #include <SDL2/SDL_opengl.h>
 #include <bullet/btBulletDynamicsCommon.h>
 #include "debug.hpp"
+#include "MatrixSender.hpp"
 class PhysicsDrawable {
-	public:
+	protected:
 	btRigidBody* body;
-	glm::mat3 colour;
-	virtual void draw() = 0;
+	glm::vec3 ambient_colour;
+	public:
+	virtual void draw() const = 0;
 	virtual ~PhysicsDrawable() = 0;
+	btRigidBody* getBody() const;
 };

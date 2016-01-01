@@ -8,7 +8,7 @@ class Cuboid : public PhysicsDrawable {
 	static void DrawCuboid();
 	static void Init();
 	static void Delete();
-	void draw();
+	void draw() const;
 	Cuboid(btVector3 position, btVector3 size, GLfloat mass);
 	~Cuboid();
 };

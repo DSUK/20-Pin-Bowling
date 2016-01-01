@@ -164,28 +164,14 @@ void main_loop(SDL_Window *display) {
 	Cuboid::Init();
 	Ball::Init();
 	Cylinder::Init();
+	PhysicsWorld world;
+	world.addBody(new Cuboid(btVector3(0.0f,0.0f,-2.0f),btVector3(1.0f,1.0f,1.0f),0.0f));
+	world.addBody(new Cuboid(btVector3(0.0f,0.0f,2.0f),btVector3(1.0f,1.0f,1.0f),0.0f));
 	do {
 		GL_CATCH();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
-		MatrixSender::SetModel(glm::mat4(1.0f));
-		MatrixSender::CalculateMVP();
-		MatrixSender::SendMVP();
-		Ball::DrawBall();
-		MatrixSender::SetModel(glm::mat4(1.0f,0.0f, 0.0f, 0.0f,
-						0.0f, 1.0f, 0.0f, 0.0f,
-						0.0f, 0.0f, 1.0f, 0.0f,
-						0.0f, 5.0f, 0.0f, 1.0f));
-		MatrixSender::CalculateMVP();
-		MatrixSender::SendMVP();
-		Cylinder::DrawCylinder();
-		MatrixSender::SetModel(glm::mat4(1.0f,0.0f, 0.0f, 0.0f,
-						0.0f, 1.0f, 0.0f, 0.0f,
-						0.0f, 0.0f, 1.0f, 0.0f,
-						5.0f, 0.0f, 0.0f, 1.0f));
-		MatrixSender::CalculateMVP();
-		MatrixSender::SendMVP();
-		Cuboid::DrawCuboid();
+		world.drawWorld();
 
 		while(SDL_PollEvent(&event))
 		{

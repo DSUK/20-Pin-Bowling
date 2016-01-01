@@ -10,7 +10,7 @@ class Cylinder : public PhysicsDrawable {
 	static void DrawCylinder();
 	static void Init();
 	static void Delete();
-	void draw();
+	//virtual void draw();
 };
 /*
 #define	GL3_PROTOTYPES 1

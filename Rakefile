@@ -7,9 +7,13 @@ OBJ_FILES = INPUT_FILES.pathmap("%{^src/,obj/}X.o")
 
 
 task default: :build
+desc "compiles all .cpp files in /src"
 task compile: OBJ_FILES
+desc "creates debug executable"
 task build: [:debug_params,:compile, :link]
+desc "creates release executable"
 task release: [:release_params,:compile, :link]
+desc "links all .o files in /obj"
 task :link do
 	#`g++ #{INCLUDE} #{PARAMS} -o20pinbowling ./obj/* #{LIBS}`
 	#`g++ #{INCLUDE} #{PARAMS} -o20pinbowling-#{$stage} #{OBJ_FILES} #{LIBS}`
@@ -31,6 +35,8 @@ rule ".o" => ->(t){cpp_source(t)} do |f|
 	puts "Compiling: #{f.name} with #{f.source}"
 	`clang++-3.6 #{INCLUDE} #{PARAMS} -c -o#{f.name} #{f.source}`
 end
+
+desc "cleans .obj files"
 task :clean_obj do
 	`rm -rf obj/*.o`
 end
