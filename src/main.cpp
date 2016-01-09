@@ -84,42 +84,7 @@ btRigidBody* createCylinder(btVector3 position, btVector3 size, GLfloat mass) {
 	btRigidBody* body = new btRigidBody(RBCI);
 	return body;
 }
-void printmat4(GLfloat *mat4) {
-	printf("print matrix: \n");
-	printf("%f\t%f\t%f\t%f\n",mat4[0],mat4[1],mat4[2],mat4[3]);
-	mat4 += 4;
-	printf("%f\t%f\t%f\t%f\n",mat4[0],mat4[1],mat4[2],mat4[3]);
-	mat4 += 4;
-	printf("%f\t%f\t%f\t%f\n",mat4[0],mat4[1],mat4[2],mat4[3]);
-	mat4 += 4;
-	printf("%f\t%f\t%f\t%f\n",mat4[0],mat4[1],mat4[2],mat4[3]);
-}
 
-void testcube() {
-	GLuint vertexbuffer;
-	GLfloat Height = 0.5f;
-	GLfloat Width = 0.5f;
-	GLfloat Depth = 0.5f;
-
-	GLfloat vertexes[] =
-	{-Width,-Height,-Depth,
-	-Width,-Height,Depth,
-	-Width,Height,-Depth,
-	-Width,Height,Depth,
-	Width,-Height,-Depth,
-	Width,-Height,Depth,
-	Width,Height,-Depth,
-	Width,Height,Depth};
-	glGenBuffers(1,&vertexbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER,sizeof(vertexes),vertexes,GL_STATIC_DRAW);
-	SDL_assert(sizeof(vertexes) == 24*sizeof(GLfloat));
-	glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);
-	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,0);
-	glDrawArrays(GL_LINE_STRIP,0,8);
-	//glDrawElements(GL_POINTS,4,GL_UNSIGNED_SHORT,firstface);
-
-}
 void main_loop(SDL_Window *display) {
 	GLCamera camera(glm::vec3(0,0,2));
 	GLSLLoader shaders;
@@ -149,29 +114,24 @@ void main_loop(SDL_Window *display) {
 	glGenVertexArrays(1,&VertexArrayId);
 	glBindVertexArray(VertexArrayId);
 
-	GLuint vertexBuffer;
-	static const GLfloat g_vertex_buffer_data[] = {
-		-1.0f, -1.0f, 0.1f,
-		1.0f, -1.0f, 0.1f,
-		0.0f, 1.0f, 0.1f
-	};
 	Uint32 loop_time = SDL_GetTicks();
 	Uint32 time = 0;
 	glEnableVertexAttribArray(0);
-	glGenBuffers(1,&vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER,vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	Cuboid::Init();
+	atexit(Cuboid::Delete);
 	Ball::Init();
+	atexit(Ball::Delete);
 	Cylinder::Init();
+	atexit(Cylinder::Delete);
 	PhysicsWorld world;
-	world.addBody(new Cuboid(btVector3(0.0f,0.0f,-2.0f),btVector3(1.0f,1.0f,1.0f),0.0f));
-	world.addBody(new Cuboid(btVector3(0.0f,0.0f,2.0f),btVector3(1.0f,1.0f,1.0f),0.0f));
+	world.addBody(new Cuboid(btVector3(0.0f,3.0f,-2.0f),btVector3(1.0f,1.0f,1.0f),1.0f));
+	world.addBody(new Cuboid(btVector3(0.0f,-0.4f,-2.0f),btVector3(20.0f,0.1f,20.0f),0.0f));
 	do {
 		GL_CATCH();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
 		world.drawWorld();
+		world.incrementTime(0.1f);
 
 		while(SDL_PollEvent(&event))
 		{
@@ -269,226 +229,7 @@ void main_loop(SDL_Window *display) {
 		time = SDL_GetTicks() - loop_time;
 		loop_time += time;
 	} while(cont);
-	Cylinder::Delete();
-	Cuboid::Delete();
-	Ball::Delete();
-	SDL_Quit();
 }
-
-//void main_loop(SDL_Window *display) {
-/*
-void unreachable(SDL_Window *display) {
-
-	GLCamera cam(glm::vec3(0,0,2));
-	GLSLLoader shaders;
-	shaders.loadFile(GL_VERTEX_SHADER,"./glsl/Vertex.vert");
-	shaders.loadFile(GL_FRAGMENT_SHADER,"./glsl/Fragment.frag");
-	shaders.compile(GL_VERTEX_SHADER);
-	shaders.compile(GL_FRAGMENT_SHADER);
-	shaders.attach(GL_VERTEX_SHADER);
-	shaders.attach(GL_FRAGMENT_SHADER);
-	shaders.link();
-	glUseProgram(shaders.getProgramObject());
-	SDL_Event test;
-
-	glm::mat4 Perspective = glm::perspective(45.0f, 4.0f/3.0f,0.001f,1000.0f);
-	glm::mat4 Viewpoint = glm::lookAt(glm::vec3(0,0,1),glm::vec3(0,0,0),glm::vec3(0,1,0));
-	glm::mat4 Model = glm::mat4(1.0);
-	GLuint PerspectiveID = glGetUniformLocation(shaders.getProgramObject(),"Perspective");
-	GLuint ViewpointID = glGetUniformLocation(shaders.getProgramObject(),"Viewpoint");
-	GLuint ModelMatrixID = glGetUniformLocation(shaders.getProgramObject(),"Model");
-	glUniformMatrix4fv(PerspectiveID,1,GL_FALSE,&Perspective[0][0]);
-	glUniformMatrix4fv(ViewpointID,1,GL_FALSE,&Viewpoint[0][0]);
-	glUniformMatrix4fv(ModelMatrixID,1,GL_FALSE,&Model[0][0]);
-	GLuint ColourID = glGetUniformLocation(shaders.getProgramObject(),"vert_colour");
-	GLuint Lightpos = glGetUniformLocation(shaders.getProgramObject(),"vert_lightPos");
-	GLuint Lightpos2 = glGetUniformLocation(shaders.getProgramObject(),"vert_lightPos2");
-	GLuint LightCol = glGetUniformLocation(shaders.getProgramObject(),"vert_lightColour");
-			//GLuint NormalVal=
-	glGetUniformLocation(shaders.getProgramObject(),"vert_normal");
-	PhysicsWorld phys(ModelMatrixID,ColourID);
-	glUniform3f(Lightpos,1.0,3.0,0.0);
-	glUniform3f(Lightpos2,1.0,3.0,-50.0);
-	glUniformMatrix3fv(LightCol,1,GL_FALSE,&glm::mat3(1.0,1.0,1.0, 1.0,1.0,1.0,1.0,1.0,1.0)[0][0]);
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glEnableVertexAttribArray(0);
-	bool enablemouse = false;
-	bool cont = true;
-
-	SDL_assert(glGetError() == GL_NO_ERROR);
-
-	Uint32 LoopTime;
-	PhysicsDrawable* floor;
-	{
-		btRigidBody* _floor = createBox(btVector3(0,-4,-90),btVector3(40,0.1,220),0.0);
-		glm::mat3 floor_colour = glm::mat3(1.0,1.0,1.0, 1.0,1.0,1.0,1.0,1.0,1.0);
-		PhysicsDrawable *temp = new PhysicsDrawable(_floor,floor_colour);
-		floor = temp;
-	}
-	btRigidBody* cylinders[20];
-	btVector3 start(0,0,-150);
-	int e = 0; //end
-	int i = 0; //index
-	{
-		int n = 4; //count on row
-		while(n>0)
-		{
-			e+= n;
-			btVector3 temp = start;
-			while(i < e)
-			{
-				cylinders[i] = createCylinder(temp,btVector3(3,7,3),1.0);
-				temp = findLeftChild(temp,3.0);
-				++i;
-			}
-			start = findRightChild(start,3.0);
-			--n;
-		}
-		SDL_assert(glGetError() == GL_NO_ERROR);
-	}
-	start = btVector3(0,7,-150-kSqrt3Over4*1.5);
-	{
-		int n = 3; //count on row
-		while(n>0)
-		{
-			e+= n;
-			btVector3 temp = start;
-			while(i < e)
-			{
-				cylinders[i] = createCylinder(temp,btVector3(3,7,3),1.0);
-				temp = findLeftChild(temp,3.0);
-				++i;
-			}
-			start = findRightChild(start,3.0);
-			--n;
-		}
-	}
-	start = btVector3(0,14,-150-kSqrt3Over4*3);
-	{
-		int n = 2; //count on row
-		while(n>0)
-		{
-			e+= n;
-			btVector3 temp = start;
-			while(i < e)
-			{
-				cylinders[i] = createCylinder(temp,btVector3(3,7,3),1.0);
-				temp = findLeftChild(temp,3.0);
-				++i;
-			}
-			start = findRightChild(start,3.0);
-			--n;
-		}
-	}
-	cylinders[i] = createCylinder(btVector3(0,21,-150-kSqrt3Over4*4.5),btVector3(3,7,3),1.0);
-
-	for(int i = 0; i < 20; ++i)
-	{
-		phys.addBody(cylinders[i]);
-	}
-
-
-	btRigidBody* sphere = createSphere(btVector3(0,0,-20),1,1);
-	//btRigidBody* boxx = createBox(btVector3(0,0,-10),btVector3(1,10,1),1);
-	phys.addBody(sphere);
-	phys.addBody(floor);
-	while(cont)
-	{
-		LoopTime = SDL_GetTicks();
-		phys.drawWorld();
-		glUniformMatrix4fv(ModelMatrixID,1,GL_FALSE,&Model[0][0]);
-		while(SDL_PollEvent(&test))
-		{
-			switch(test.type)
-			{
-				case SDL_KEYDOWN:
-					switch(test.key.keysym.sym)
-					{
-						case SDLK_UP:
-							cam.setFowardMove(0.05f);
-						break;
-						case SDLK_DOWN:
-							cam.setFowardMove(-0.05);
-						break;
-						case SDLK_LEFT:
-							cam.setLeftMove(0.05);
-						break;
-						case SDLK_RIGHT:
-							cam.setLeftMove(-0.05);
-						break;
-						case SDLK_SPACE:
-							SDL_ShowCursor(!SDL_ShowCursor(-1));
-							enablemouse = !enablemouse;
-						break;
-						case SDLK_k:
-							glDisableVertexAttribArray(0);
-						default:
-						break;
-					}
-				break;
-				case SDL_KEYUP:
-					switch(test.key.keysym.sym)
-					{
-						case SDLK_UP:
-							cam.setFowardMove(0);
-						break;
-						case SDLK_DOWN:
-							cam.setFowardMove(0);
-						break;
-						case SDLK_LEFT:
-							cam.setLeftMove(0);
-						break;
-						case SDLK_RIGHT:
-							cam.setLeftMove(0);
-						break;
-						case SDLK_ESCAPE:
-						cont = false;
-						break;
-						default:
-						break;
-					}
-				break;
-				case SDL_MOUSEBUTTONDOWN:
-					switch(test.button.button)
-					{
-						case SDL_BUTTON_LEFT:
-							glm::vec3 thrower = cam.getPos();
-							btRigidBody *a_sphere = createSphere(btVector3(thrower.x,thrower.y,thrower.z),1,10);
-							thrower = cam.getLook();
-							a_sphere->setLinearVelocity(btVector3(40.0*thrower.x,40.0*thrower.y,40.0*thrower.z));
-							phys.addBody(a_sphere);
-						break;
-					}
-				break;
-				case SDL_QUIT:
-					cont = false;
-				break;
-				default:
-				break;
-			}
-		}
-		if(enablemouse)
-		{
-			int centreX = kWindowWidth/2;
-			int centreY = kWindowHeight/2;
-			int mX,mY;
-			mX = mY =0;
-			SDL_GetMouseState(&mX,&mY);
-			cam.rotateXY(mX-centreX,mY-centreY);
-			SDL_WarpMouseInWindow(display,centreX,centreY);
-		}
-		cam.move();
-		SDL_GL_SwapWindow(display);
-		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-		Viewpoint = cam.calculateViewMatrix();
-		glUniformMatrix4fv(ViewpointID,1,GL_FALSE,&Viewpoint[0][0]);
-		SDL_Delay(10);
-		LoopTime = SDL_GetTicks() - LoopTime;
-		phys.incrementTime(static_cast<float>(LoopTime)/1000.0f);
-	}
-
-	SDL_Quit();
-}*/
 
 int main() {
 	SDL_Window *display;
@@ -516,6 +257,7 @@ int main() {
 	glGetError();
 	glClearColor(0.0,1.0,1.0,1.0);
 	glEnable(GL_DEPTH_TEST);
+	atexit(SDL_Quit);
 	main_loop(display);
 	return 0;
 }
