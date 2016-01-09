@@ -12,8 +12,8 @@ class Ball : public PhysicsDrawable {
 	static void DrawBall();
 	static void Init();
 	static void Delete();
-	//virutal void draw();
-	Ball(btVector3 position, btVector3 size, GLfloat mass);
+	void draw() const;
+	Ball(btVector3 position, GLfloat size, GLfloat mass);
 	~Ball();
 };
 

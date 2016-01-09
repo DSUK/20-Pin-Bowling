@@ -51,6 +51,32 @@ void Ball::DrawBall() {
 void Ball::Delete() {
 	glDeleteBuffers(1,&vertexBuffer);
 }
+void Ball::draw() const {
+	GLfloat matrix[16];
+	btTransform bullet_transform;
+	body->getMotionState()->getWorldTransform(bullet_transform);
+	bullet_transform.getOpenGLMatrix(matrix);
+	MatrixSender::SetModel(glm::scale(glm::make_mat4(matrix),glm::vec3(((btSphereShape*)body->getCollisionShape())->getRadius())));
+	MatrixSender::CalculateMVP();
+	MatrixSender::SendMVP();
+	DrawBall();
+}
+Ball::~Ball() {
+	delete body;
+}
+Ball::Ball(btVector3 position, GLfloat radius, GLfloat mass) {
+	btTransform trans;
+	trans.setIdentity();
+	trans.setOrigin(position);
+	btSphereShape *sphere = new btSphereShape(radius);
+	btVector3 inert(0.0,0.0,0.0);
+	if(mass != 0.0) {
+		sphere->calculateLocalInertia(mass,inert);
+	}
+	btMotionState* motion = new btDefaultMotionState(trans);
+	btRigidBody::btRigidBodyConstructionInfo RBCI(mass,motion,sphere,inert);
+	body = new btRigidBody(RBCI);
+}
 /*
 Ball::Ball(GLfloat _radius, GLuint segment_resolution, GLuint segment_count) {
 	segmentCount = segment_count;

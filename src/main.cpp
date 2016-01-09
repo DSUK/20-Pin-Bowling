@@ -126,6 +126,7 @@ void main_loop(SDL_Window *display) {
 	PhysicsWorld world;
 	world.addBody(new Cuboid(btVector3(0.0f,3.0f,-2.0f),btVector3(1.0f,1.0f,1.0f),1.0f));
 	world.addBody(new Cuboid(btVector3(0.0f,-0.4f,-2.0f),btVector3(20.0f,0.1f,20.0f),0.0f));
+	world.addBody(new Ball(btVector3(0.0f,2.0f,-2.01f),0.5f,1.0f));
 	do {
 		GL_CATCH();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
