@@ -1,3 +1,5 @@
 *.swp
 obj/*
 20pinbowling-debug
+dependencies/*
+20PinBowling/*

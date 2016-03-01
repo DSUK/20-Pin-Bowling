@@ -234,8 +234,7 @@ void main_loop(SDL_Window *display) {
 
 int main() {
 	SDL_Window *display;
-	SDL_GLContext context;
-	//static SDL_GLContext context;
+	//SDL_GLContext context;
 	SDL_CATCH(SDL_Init(SDL_INIT_EVERYTHING));
 	SDL_LogSetPriority(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO);
 	display = SDL_CreateWindow("20 Pin Bowling",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -247,7 +246,8 @@ int main() {
 	SDL_CATCH(SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1));
 
 	SDL_CATCH(SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24));
-	context = SDL_GL_CreateContext(display);
+	//static SDL_GLContext contex =
+	SDL_GL_CreateContext(display);
 	SDL_CATCH(SDL_GL_SetSwapInterval(1));
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK){

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 //scale
 #include <glm/gtc/matrix_transform.hpp>

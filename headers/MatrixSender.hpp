@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
+#define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
 #include <SDL2/SDL_assert.h>
 class MatrixSender {
