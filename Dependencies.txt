@@ -1,0 +1,5 @@
+Dependenceis:
+	SDL2 (2.2.2 used)
+	OpenGL (4.0.1 set, might work with an earlier version)
+	Bullet Physics 2.81
+	GLEW: 1.10.0
