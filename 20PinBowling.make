@@ -19,7 +19,7 @@ ifeq ($(config),debug)
   INCLUDES += -Iheaders -I/usr/include/bullet
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS)
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -std=c++11 -Wall -Werror
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += -lSDL2_test -lSDL2 -lGLEW -lGL -lpthread -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath
@@ -46,7 +46,7 @@ ifeq ($(config),release)
   INCLUDES += -Iheaders -I/usr/include/bullet
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS)
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -std=c++11 -Wall -Werror
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CFLAGS)
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += -lSDL2_test -lSDL2 -lGLEW -lGL -lpthread -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath

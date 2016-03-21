@@ -9,5 +9,5 @@ project "20PinBowling"
 	links { "SDL2_test", "SDL2", "GLEW", "GL", "pthread", "BulletSoftBody", "BulletDynamics", "BulletCollision", "LinearMath" }
 
 --TODO: create a directory with root modules for dependencies
-configuration { "gmake", "gcc", "clang" }
+configuration { "gmake" }
 	buildoptions{ "-std=c++11", "-Wall", "-Werror" }
