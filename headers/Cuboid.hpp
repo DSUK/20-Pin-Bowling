@@ -4,6 +4,7 @@
 class Cuboid : public PhysicsDrawable {
 	static GLuint vertexBuffer;
 	static GLuint indexBuffer;
+	static GLuint normalBuffer;
 	public:
 	static void DrawCuboid();
 	static void Init();

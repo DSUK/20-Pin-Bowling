@@ -96,11 +96,11 @@ void main_loop(SDL_Window *display) {
 	shaders.attach(GL_VERTEX_SHADER);
 	shaders.attach(GL_FRAGMENT_SHADER);
 	shaders.bindAttribute(0, "in_vertexpos");
+	shaders.bindAttribute(1, "in_normal");
 	shaders.link();
 	shaders.useProgram();
-	GLuint ass = shaders.uniformLocation("MVP");
 	GL_CATCH();
-	MatrixSender::Init(ass);
+	MatrixSender::Init(shaders.uniformLocation("MVP"), shaders.uniformLocation("NormalTransform"));
 	MatrixSender::SetProjection(glm::perspective(45.0f, 4.0f/3.0f,0.001f,1000.0f));
 	MatrixSender::SetModel(glm::mat4(1.0));
 	MatrixSender::SetView(glm::lookAt(glm::vec3(1,1,1),glm::vec3(0,0,0),glm::vec3(0,1,0)));
@@ -117,6 +117,7 @@ void main_loop(SDL_Window *display) {
 	Uint32 loop_time = SDL_GetTicks();
 	Uint32 time = 0;
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
 	Cuboid::Init();
 	atexit(Cuboid::Delete);
 	Ball::Init();

@@ -1,5 +1,6 @@
 #include "Ball.hpp"
 GLuint Ball::vertexBuffer = 0;
+GLuint Ball::normalBuffer = 0;
 GLuint Ball::trianglePointCount = 0;
 constexpr GLuint BALL_RECUR_LEVEL = 5;
 constexpr GLuint BALL_VECTOR_RESERVE = BALL_RECUR_LEVEL * 24*(1 << 2*BALL_RECUR_LEVEL);
@@ -7,18 +8,39 @@ void Ball::Init() {
 	std::vector<GLfloat> vertices;
 	vertices.reserve(BALL_VECTOR_RESERVE);
 	trianglePointCount = 0;
-	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
-	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
-	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
-	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
-	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
-	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
-	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
-	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f), glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
+
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
+
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f),
+		glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
+
+	CalculateRecursivePoints(vertices,glm::vec3(1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f),
+		glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
+
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
+
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,1.0f,0.0f),
+		glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
+
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f),
+		glm::vec3(0.0f,0.0f,1.0f), BALL_RECUR_LEVEL);
+
+	CalculateRecursivePoints(vertices,glm::vec3(-1.0f,0.0f,0.0f), glm::vec3(0.0f,-1.0f,0.0f),
+		glm::vec3(0.0f,0.0f,-1.0f), BALL_RECUR_LEVEL);
+
 	glGenBuffers(1,&vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(GLfloat), &vertices[0],GL_STATIC_DRAW);
-	GL_CATCH();
+	glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE,0,0);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
+	
+	glGenBuffers(1,&normalBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+	glVertexAttribPointer(1, 3, GL_FLOAT,GL_FALSE,0,0);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
 }
 
 void Ball::CalculateRecursivePoints(std::vector<GLfloat> &points,glm::vec3 a, glm::vec3 b, glm::vec3 c, GLuint level) {
@@ -46,19 +68,28 @@ void Ball::CalculateRecursivePoints(std::vector<GLfloat> &points,glm::vec3 a, gl
 void Ball::DrawBall() {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE,0,0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glVertexAttribPointer(1, 3, GL_FLOAT,GL_FALSE,0,0);
+
 	glDrawArrays(GL_TRIANGLES,0,trianglePointCount);
 };
 void Ball::Delete() {
 	glDeleteBuffers(1,&vertexBuffer);
+	glDeleteBuffers(1,&normalBuffer);
 }
 void Ball::draw() const {
 	GLfloat matrix[16];
 	btTransform bullet_transform;
 	body->getMotionState()->getWorldTransform(bullet_transform);
 	bullet_transform.getOpenGLMatrix(matrix);
-	MatrixSender::SetModel(glm::scale(glm::make_mat4(matrix),glm::vec3(((btSphereShape*)body->getCollisionShape())->getRadius())));
+	MatrixSender::SetModel(glm::scale(glm::make_mat4(matrix),
+		glm::vec3(((btSphereShape*)body->getCollisionShape())->getRadius())));
+
 	MatrixSender::CalculateMVP();
 	MatrixSender::SendMVP();
+	MatrixSender::CalculateNormal();
+	MatrixSender::SendNormal();
 	DrawBall();
 }
 Ball::~Ball() {

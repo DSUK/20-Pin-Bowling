@@ -3,10 +3,10 @@
 #include "PhysicsDrawable.hpp"
 #include <vector>
 class Ball : public PhysicsDrawable {
-	static GLuint vertexBuffer;
+	static GLuint vertexBuffer, normalBuffer;
 	static GLuint trianglePointCount;
-	static void CalculateRecursivePoints(std::vector<GLfloat> &verts,glm::vec3 first, glm::vec3 second, glm::vec3 third
-		,GLuint level);
+	static void CalculateRecursivePoints(std::vector<GLfloat> &verts,glm::vec3 first, glm::vec3 second,
+		glm::vec3 third, GLuint level);
 
 	public:
 	static void DrawBall();

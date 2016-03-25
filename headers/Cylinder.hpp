@@ -6,6 +6,7 @@ class Cylinder : public PhysicsDrawable {
 	static GLuint vertexBuffer;
 	static GLuint indexBuffer;
 	static GLuint vertexLength;
+	static GLuint normalBuffer;
 	public:
 	static void DrawCylinder();
 	static void Init();

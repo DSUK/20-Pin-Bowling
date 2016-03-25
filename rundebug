@@ -1,2 +1,4 @@
 #!/bin/bash
+make
 bin/Debug/20PinBowling
+#gdb -q -ex run bin/Debug/20PinBowling

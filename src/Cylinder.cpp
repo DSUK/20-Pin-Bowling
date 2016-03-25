@@ -1,6 +1,7 @@
 #include "Cylinder.hpp"
 
 GLuint Cylinder::vertexBuffer = 0;
+GLuint Cylinder::normalBuffer = 0;
 GLuint Cylinder::indexBuffer = 0;
 GLuint Cylinder::vertexLength = 0;
 constexpr GLuint CYLINDER_SEGMENT_COUNT = 40;
@@ -67,8 +68,12 @@ void Cylinder::Init() {
 
 	glGenBuffers(1, &vertexBuffer);
 	glGenBuffers(1, &indexBuffer);
+	glGenBuffers(1, &normalBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER,vertices.size()*sizeof(GLfloat), &vertices[0],GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+	glBufferData(GL_ARRAY_BUFFER,vertices.size()*sizeof(GLfloat), &vertices[0],GL_STATIC_DRAW);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,indecies.size()*sizeof(GLfloat), &indecies[0], GL_STATIC_DRAW);
 	vertexLength = indecies.size();
