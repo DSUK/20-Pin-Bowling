@@ -95,7 +95,7 @@ void Ball::draw() const {
 Ball::~Ball() {
 	delete body;
 }
-Ball::Ball(btVector3 position, GLfloat radius, GLfloat mass) {
+Ball::Ball(btVector3 position, GLfloat radius, GLfloat mass, btVector3 velocity) {
 	btTransform trans;
 	trans.setIdentity();
 	trans.setOrigin(position);
@@ -107,6 +107,7 @@ Ball::Ball(btVector3 position, GLfloat radius, GLfloat mass) {
 	btMotionState* motion = new btDefaultMotionState(trans);
 	btRigidBody::btRigidBodyConstructionInfo RBCI(mass,motion,sphere,inert);
 	body = new btRigidBody(RBCI);
+	body->setLinearVelocity(velocity);
 }
 /*
 Ball::Ball(GLfloat _radius, GLuint segment_resolution, GLuint segment_count) {
