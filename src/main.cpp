@@ -114,8 +114,8 @@ void main_loop(SDL_Window *display) {
 	glGenVertexArrays(1,&VertexArrayId);
 	glBindVertexArray(VertexArrayId);
 
-	Uint32 loop_time = SDL_GetTicks();
-	Uint32 time = 0;
+	Uint32 time = SDL_GetTicks();
+	Uint32 loop_time = 0;
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	Cuboid::Init();
@@ -133,7 +133,7 @@ void main_loop(SDL_Window *display) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
 		world.drawWorld();
-		world.incrementTime(0.1f);
+		world.incrementTime(0.0001f*loop_time);
 
 		while(SDL_PollEvent(&event))
 		{
@@ -214,18 +214,18 @@ void main_loop(SDL_Window *display) {
 				int mX,mY;
 				mX = mY = 0;
 				SDL_GetMouseState(&mX,&mY);
-				camera.rotateXY(mX-kWindowCentreX,mY-kWindowCentreY,time);
+				camera.rotateXY(mX-kWindowCentreX,mY-kWindowCentreY,loop_time);
 				SDL_WarpMouseInWindow(display,kWindowCentreX,kWindowCentreY);
 
 			}
 		}
-		camera.move(time);
+		camera.move(loop_time);
 		camera.setMatrixSenderViewMatrix();
 		MatrixSender::CalculateMVP();
 		MatrixSender::SendMVP();
 		SDL_GL_SwapWindow(display);
-		time = SDL_GetTicks() - loop_time;
-		loop_time += time;
+		loop_time = SDL_GetTicks() - time;
+		time += loop_time;
 	} while(cont);
 }
 
