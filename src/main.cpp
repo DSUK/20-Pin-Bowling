@@ -127,7 +127,7 @@ void main_loop(SDL_Window *display) {
 	PhysicsWorld world;
 	world.addBody(new Cuboid(btVector3(0.0f,3.0f,-2.0f),btVector3(1.0f,1.0f,1.0f),1.0f));
 	world.addBody(new Cuboid(btVector3(0.0f,-0.4f,-2.0f),btVector3(20.0f,0.1f,20.0f),0.0f));
-	world.addBody(new Ball(btVector3(0.0f,2.0f,-2.01f),0.5f,1.0f,btVector3(0.0,10.0f,0.0)));
+	world.addBody(new Ball(btVector3(0.0f,2.0f,-2.01f),0.5f,1.0f));
 	do {
 		GL_CATCH();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -162,8 +162,6 @@ void main_loop(SDL_Window *display) {
 							SDL_ShowCursor(!SDL_ShowCursor(-1));
 							enablemouse = !enablemouse;
 						break;
-						case SDLK_k:
-							//glDisableVertexAttribArray(0);
 						default:
 						break;
 					}
@@ -194,20 +192,18 @@ void main_loop(SDL_Window *display) {
 						break;
 					}
 				break;
-				/*
 				case SDL_MOUSEBUTTONDOWN:
 					switch(event.button.button)
 					{
 						case SDL_BUTTON_LEFT:
-							glm::vec3 thrower = camera.getPos();
-							btRigidBody *a_sphere = createSphere(btVector3(thrower.x,thrower.y,thrower.z),1,10);
-							thrower = camera.getLook();
-							a_sphere->setLinearVelocity(btVector3(40.0*thrower.x,40.0*thrower.y,40.0*thrower.z));
-							phys.addBody(a_sphere);
+							glm::vec3 look = 40.0f*camera.getLook();
+							glm::vec3 pos = camera.getPos();
+							world.addBody(new Ball(
+								btVector3(pos.x,pos.y,pos.z),0.5f,1.0f,
+								btVector3(look.x,look.y,look.z)));
 						break;
 					}
 				break;
-				*/
 				case SDL_QUIT:
 					cont = false;
 				break;
