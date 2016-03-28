@@ -21,10 +21,10 @@ class GLCamera {
 	public:
 	GLCamera(glm::vec3 pos);
 	glm::mat4 calculateViewMatrix();
-	void rotateXY(int x, int y, Uint32 time);
+	void rotateXY(int x, int y, float time);
 	void setFowardMove(float amount);
 	void setLeftMove(float amount);
-	void move(Uint32 time);
+	void move(float time);
 	void setMatrixSenderViewMatrix() const;
 	glm::vec3 getLook() const;
 	glm::vec3 getPos() const;

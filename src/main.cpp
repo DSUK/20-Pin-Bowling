@@ -19,6 +19,9 @@
 #include "debug.hpp"
 #include "MatrixSender.hpp"
 #include <glm/gtc/type_ptr.hpp>
+#include <chrono>
+typedef std::chrono::high_resolution_clock Timer;
+typedef std::chrono::duration<float> fsec;
 
 const float kSqrt2 = 1.41421356237;
 //const float kSqrt3Over4 = 0.86602540378;
@@ -114,8 +117,12 @@ void main_loop(SDL_Window *display) {
 	glGenVertexArrays(1,&VertexArrayId);
 	glBindVertexArray(VertexArrayId);
 
-	Uint32 time = SDL_GetTicks();
-	Uint32 loop_time = 0;
+	auto start_loop = Timer::now();
+	auto end_loop = Timer::now();
+	float loop_time = ((fsec)(end_loop - start_loop)).count();
+
+	//Uint32 time = SDL_GetTicks();
+	//Uint32 loop_time = 0;
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	Cuboid::Init();
@@ -133,7 +140,7 @@ void main_loop(SDL_Window *display) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
 		world.drawWorld();
-		world.incrementTime(0.0001f*loop_time);
+		world.incrementTime(0.5f*loop_time);
 
 		while(SDL_PollEvent(&event))
 		{
@@ -144,19 +151,19 @@ void main_loop(SDL_Window *display) {
 					{
 						case SDLK_UP:
 						case SDLK_w:
-							camera.setFowardMove(0.05f);
+							camera.setFowardMove(5.0f);
 						break;
 						case SDLK_DOWN:
 						case SDLK_s:
-							camera.setFowardMove(-0.05f);
+							camera.setFowardMove(-5.0f);
 						break;
 						case SDLK_LEFT:
 						case SDLK_a:
-							camera.setLeftMove(0.05f);
+							camera.setLeftMove(5.0f);
 						break;
 						case SDLK_RIGHT:
 						case SDLK_d:
-							camera.setLeftMove(-0.05f);
+							camera.setLeftMove(-5.0f);
 						break;
 						case SDLK_SPACE:
 							SDL_ShowCursor(!SDL_ShowCursor(-1));
@@ -224,8 +231,14 @@ void main_loop(SDL_Window *display) {
 		MatrixSender::CalculateMVP();
 		MatrixSender::SendMVP();
 		SDL_GL_SwapWindow(display);
-		loop_time = SDL_GetTicks() - time;
-		time += loop_time;
+
+		end_loop = Timer::now();
+		loop_time = ((fsec)(end_loop - start_loop)).count();
+		start_loop = end_loop;
+		
+		//loop_time = SDL_GetTicks() - time;
+		//time += loop_time;
+		printf("loop Time: %f\n", loop_time);
 	} while(cont);
 }
 
