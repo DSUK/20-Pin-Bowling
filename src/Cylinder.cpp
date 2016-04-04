@@ -1,4 +1,5 @@
 #include "Cylinder.hpp"
+#include <iostream>
 
 GLuint Cylinder::vertexBuffer = 0;
 GLuint Cylinder::normalBuffer = 0;
@@ -69,25 +70,39 @@ void Cylinder::Init() {
 	glGenBuffers(1, &vertexBuffer);
 	glGenBuffers(1, &indexBuffer);
 	glGenBuffers(1, &normalBuffer);
+
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE,0,0);
 	glBufferData(GL_ARRAY_BUFFER,vertices.size()*sizeof(GLfloat), &vertices[0],GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+	glVertexAttribPointer(1, 3, GL_FLOAT,GL_FALSE,0,0);
 	glBufferData(GL_ARRAY_BUFFER,vertices.size()*sizeof(GLfloat), &vertices[0],GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,indecies.size()*sizeof(GLfloat), &indecies[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,indecies.size()*sizeof(GLuint), &indecies[0], GL_STATIC_DRAW);
 	vertexLength = indecies.size();
+	GL_CATCH();
 }
 void Cylinder::Delete() {
 	glDeleteBuffers(1, &vertexBuffer);
 	glDeleteBuffers(1, &indexBuffer);
+	glDeleteBuffers(1, &normalBuffer);
 }
 void Cylinder::DrawCylinder(){
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glVertexAttribPointer(0, 3, GL_FLOAT,GL_FALSE,0,0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+	glVertexAttribPointer(1, 3, GL_FLOAT,GL_FALSE,0,0);
+
 	glDrawElements(GL_TRIANGLES,vertexLength,GL_UNSIGNED_SHORT,(void*)0);
 };
+Cylinder::Cylinder(btVector3 position, btVector3 size, GLfloat mass) {
+}
 /*
 Cylinder::Cylinder(GLfloat radius, GLfloat height, GLuint slices) {
 	sliceCount = slices;

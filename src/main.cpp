@@ -29,64 +29,64 @@ const int kWindowWidth = 1024;
 const int kWindowHeight = 768;
 const int kWindowCentreX = kWindowWidth/2;
 const int kWindowCentreY = kWindowHeight/2;
-int triangleNum(int number) {
-	return (number*(number+1)) >> 1;
-}
-
-btVector3 findLeftChild(btVector3 node,btScalar radius) {
-	return btVector3(node.x()+radius/2, node.y(),node.z() - radius/kSqrt2);
-}
-
-btVector3 findRightChild(btVector3 node,btScalar radius) {
-	return btVector3(node.x()-radius/2, node.y(),node.z() - radius/kSqrt2);
-}
-
-btRigidBody* createSphere(btVector3 position,GLfloat radius, GLfloat mass) {
-	btTransform trans;
-	trans.setIdentity();
-	trans.setOrigin(position);
-	btSphereShape *sphere = new btSphereShape(radius);
-	btVector3 inert(0.0,0.0,0.0);
-	if(mass != 0.0)
-	{
-		sphere->calculateLocalInertia(mass,inert);
-	}
-	btMotionState* motion = new btDefaultMotionState(trans);
-	btRigidBody::btRigidBodyConstructionInfo RBCI(mass,motion,sphere,inert);
-	btRigidBody* body = new btRigidBody(RBCI);
-	return body;
-}
-btRigidBody* createBox(btVector3 position, btVector3 size, GLfloat mass) {
-	btTransform trans;
-	trans.setIdentity();
-	trans.setOrigin(position);
-	btBoxShape *box = new btBoxShape(size/2.0);
-	btVector3 inert(0.0,0.0,0.0);
-	if(mass != 0.0)
-	{
-		box->calculateLocalInertia(mass,inert);
-	}
-	btMotionState *motion = new btDefaultMotionState(trans);
-	btRigidBody::btRigidBodyConstructionInfo RBCI(mass,motion,box,inert);
-	btRigidBody* body = new btRigidBody(RBCI);
-	return body;
-}
-
-btRigidBody* createCylinder(btVector3 position, btVector3 size, GLfloat mass) {
-	btTransform trans;
-	trans.setIdentity();
-	trans.setOrigin(position);
-	btCylinderShape *cylinder = new btCylinderShape(size/2.0);
-	btVector3 inert(0.0,0.0,0.0);
-	if(mass != 0.0)
-	{
-		cylinder->calculateLocalInertia(mass,inert);
-	}
-	btMotionState *motion = new btDefaultMotionState(trans);
-	btRigidBody::btRigidBodyConstructionInfo RBCI(mass,motion,cylinder,inert);
-	btRigidBody* body = new btRigidBody(RBCI);
-	return body;
-}
+//int triangleNum(int number) {
+//	return (number*(number+1)) >> 1;
+//}
+//
+//btVector3 findLeftChild(btVector3 node,btScalar radius) {
+//	return btVector3(node.x()+radius/2, node.y(),node.z() - radius/kSqrt2);
+//}
+//
+//btVector3 findRightChild(btVector3 node,btScalar radius) {
+//	return btVector3(node.x()-radius/2, node.y(),node.z() - radius/kSqrt2);
+//}
+//
+//btRigidBody* createSphere(btVector3 position,GLfloat radius, GLfloat mass) {
+//	btTransform trans;
+//	trans.setIdentity();
+//	trans.setOrigin(position);
+//	btSphereShape *sphere = new btSphereShape(radius);
+//	btVector3 inert(0.0,0.0,0.0);
+//	if(mass != 0.0)
+//	{
+//		sphere->calculateLocalInertia(mass,inert);
+//	}
+//	btMotionState* motion = new btDefaultMotionState(trans);
+//	btRigidBody::btRigidBodyConstructionInfo RBCI(mass,motion,sphere,inert);
+//	btRigidBody* body = new btRigidBody(RBCI);
+//	return body;
+//}
+//btRigidBody* createBox(btVector3 position, btVector3 size, GLfloat mass) {
+//	btTransform trans;
+//	trans.setIdentity();
+//	trans.setOrigin(position);
+//	btBoxShape *box = new btBoxShape(size/2.0);
+//	btVector3 inert(0.0,0.0,0.0);
+//	if(mass != 0.0)
+//	{
+//		box->calculateLocalInertia(mass,inert);
+//	}
+//	btMotionState *motion = new btDefaultMotionState(trans);
+//	btRigidBody::btRigidBodyConstructionInfo RBCI(mass,motion,box,inert);
+//	btRigidBody* body = new btRigidBody(RBCI);
+//	return body;
+//}
+//
+//btRigidBody* createCylinder(btVector3 position, btVector3 size, GLfloat mass) {
+//	btTransform trans;
+//	trans.setIdentity();
+//	trans.setOrigin(position);
+//	btCylinderShape *cylinder = new btCylinderShape(size/2.0);
+//	btVector3 inert(0.0,0.0,0.0);
+//	if(mass != 0.0)
+//	{
+//		cylinder->calculateLocalInertia(mass,inert);
+//	}
+//	btMotionState *motion = new btDefaultMotionState(trans);
+//	btRigidBody::btRigidBodyConstructionInfo RBCI(mass,motion,cylinder,inert);
+//	btRigidBody* body = new btRigidBody(RBCI);
+//	return body;
+//}
 
 void main_loop(SDL_Window *display) {
 	GLCamera camera(glm::vec3(0,0,2));
@@ -141,6 +141,14 @@ void main_loop(SDL_Window *display) {
 		glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,(void*)0);
 		world.drawWorld();
 		world.incrementTime(0.5f*loop_time);
+
+		MatrixSender::SetModel(glm::mat4(1.0));
+		MatrixSender::CalculateMVP();
+		MatrixSender::CalculateNormal();
+		MatrixSender::SendMVP();
+		MatrixSender::SendNormal();
+		Cylinder::DrawCylinder();
+
 
 		while(SDL_PollEvent(&event))
 		{
@@ -236,9 +244,6 @@ void main_loop(SDL_Window *display) {
 		loop_time = ((fsec)(end_loop - start_loop)).count();
 		start_loop = end_loop;
 		
-		//loop_time = SDL_GetTicks() - time;
-		//time += loop_time;
-		printf("loop Time: %f\n", loop_time);
 	} while(cont);
 }
 
