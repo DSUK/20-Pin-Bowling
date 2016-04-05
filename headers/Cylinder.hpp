@@ -12,7 +12,8 @@ class Cylinder : public PhysicsDrawable {
 	static void Init();
 	static void Delete();
 	Cylinder(btVector3 position, btVector3 size, GLfloat mass);
-	//virtual void draw();
+	~Cylinder();
+	virtual void draw() const;
 };
 /*
 #define	GL3_PROTOTYPES 1

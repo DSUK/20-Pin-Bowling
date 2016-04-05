@@ -135,6 +135,7 @@ void main_loop(SDL_Window *display) {
 	world.addBody(new Cuboid(btVector3(0.0f,3.0f,-2.0f),btVector3(1.0f,1.0f,1.0f),1.0f));
 	world.addBody(new Cuboid(btVector3(0.0f,-0.4f,-2.0f),btVector3(20.0f,0.1f,20.0f),0.0f));
 	world.addBody(new Ball(btVector3(0.0f,2.0f,-2.01f),0.5f,1.0f));
+	world.addBody(new Cylinder(btVector3(2.0f,4.0f,-2.0f),btVector3(1.0f,1.0f,1.0f),10.0f));
 	do {
 		GL_CATCH();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -142,12 +143,6 @@ void main_loop(SDL_Window *display) {
 		world.drawWorld();
 		world.incrementTime(0.5f*loop_time);
 
-		MatrixSender::SetModel(glm::mat4(1.0));
-		MatrixSender::CalculateMVP();
-		MatrixSender::CalculateNormal();
-		MatrixSender::SendMVP();
-		MatrixSender::SendNormal();
-		Cylinder::DrawCylinder();
 
 
 		while(SDL_PollEvent(&event))
