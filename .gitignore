@@ -4,3 +4,5 @@ obj/*
 dependencies/*
 20PinBowling/*
 bin/*
+*.VC.opendb
+.vs/
