@@ -95,7 +95,7 @@ void Ball::draw() const {
 Ball::~Ball() {
 	delete body;
 }
-Ball::Ball(btVector3 position, GLfloat radius, GLfloat mass, btVector3 velocity) {
+Ball::Ball(const btVector3 &position, GLfloat radius, GLfloat mass, const btVector3 &velocity) {
 	btTransform trans;
 	trans.setIdentity();
 	trans.setOrigin(position);

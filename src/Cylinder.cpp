@@ -101,7 +101,7 @@ void Cylinder::DrawCylinder(){
 
 	glDrawElements(GL_TRIANGLES,vertexLength,GL_UNSIGNED_SHORT,(void*)0);
 };
-Cylinder::Cylinder(btVector3 position, btVector3 size, GLfloat mass) {
+Cylinder::Cylinder(const btVector3 &position, const btVector3 &size, GLfloat mass) {
 	btTransform trans;
 	trans.setIdentity();
 	trans.setOrigin(position);

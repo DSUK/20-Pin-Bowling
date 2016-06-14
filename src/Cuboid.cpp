@@ -3,7 +3,7 @@ GLuint Cuboid::vertexBuffer = 0;
 GLuint Cuboid::indexBuffer = 0;
 GLuint Cuboid::normalBuffer = 0;
 
-Cuboid::Cuboid(btVector3 position, btVector3 size, GLfloat mass) {
+Cuboid::Cuboid(const btVector3 &position, const btVector3 &size, GLfloat mass) {
 	btTransform trans;
 	trans.setIdentity();
 	trans.setOrigin(position);

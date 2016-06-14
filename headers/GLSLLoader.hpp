@@ -1,13 +1,12 @@
 #pragma once
 
-#define GL_GLEXT_PROTOTYPES 1
 #define _ISOC11_SOURCE 1
 #include <vector>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
-#include <SDL2/SDL_opengl.h>
+#include <GL/glew.h>
 class GLSLLoader {
 	std::string fragSource;
 	std::string vertexSource;

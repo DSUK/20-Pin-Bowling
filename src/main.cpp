@@ -4,6 +4,7 @@
 #endif
 #include <GL/glew.h>
 //#include <cmath>
+#define SDL_MAIN_HANDLED
 #include <SDL2/SDL.h>
 #include "GLSLLoader.hpp"
 #include <glm/glm.hpp>
@@ -23,7 +24,7 @@
 typedef std::chrono::high_resolution_clock Timer;
 typedef std::chrono::duration<float> fsec;
 
-const float kSqrt2 = 1.41421356237;
+const float kSqrt2 = 1.41421356237f;
 //const float kSqrt3Over4 = 0.86602540378;
 const int kWindowWidth = 1024;
 const int kWindowHeight = 768;
@@ -241,8 +242,7 @@ void main_loop(SDL_Window *display) {
 		
 	} while(cont);
 }
-
-int main() {
+int main(int argc, char *argv[]) {
 	SDL_Window *display;
 	//SDL_GLContext context;
 	SDL_CATCH(SDL_Init(SDL_INIT_EVERYTHING));

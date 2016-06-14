@@ -4,7 +4,7 @@ extern void gl_error(int number, int line, const char *file);
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
-#include <execinfo.h>
+//#include <execinfo.h>
 #define STACK_TRACE_LENGTH 10
 #define SDL_CATCH(X) \
 	do {	int _____TEMP; \

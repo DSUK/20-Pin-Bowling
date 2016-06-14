@@ -13,7 +13,7 @@ class Ball : public PhysicsDrawable {
 	static void Init();
 	static void Delete();
 	void draw() const;
-	Ball(btVector3 position, GLfloat radius, GLfloat mass, btVector3 velocity = btVector3(0.0,0.0,0.0));
+	Ball(const btVector3 &position, GLfloat radius, GLfloat mass, const btVector3 &velocity = btVector3(0.0,0.0,0.0));
 	~Ball();
 };
 

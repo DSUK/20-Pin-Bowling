@@ -11,7 +11,7 @@ class Cylinder : public PhysicsDrawable {
 	static void DrawCylinder();
 	static void Init();
 	static void Delete();
-	Cylinder(btVector3 position, btVector3 size, GLfloat mass);
+	Cylinder(const btVector3 &position, const btVector3 &size, GLfloat mass);
 	~Cylinder();
 	virtual void draw() const;
 };
